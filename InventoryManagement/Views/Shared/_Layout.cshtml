@@ -1,0 +1,44 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Inventory | Home</title>
+		<partial name="Layouts/_Styles" />
+	</head>
+
+	<body class="hold-transition sidebar-mini layout-fixed">
+		<div class="wrapper">
+
+			<!-- Preloader -->
+			<partial name="Layouts/_Preloader" />
+
+			<!-- Navbar -->
+			<partial name="Layouts/_Navbar" />
+			<!-- /.navbar -->
+			<!-- Main Sidebar Container -->
+			<partial name="Layouts/_Sidebar" />
+
+			<!-- Content Wrapper. Contains page content -->
+			<div class="content-wrapper">
+				<div class="container-fluid">
+			@RenderBody()
+				</div>
+			</div>
+			<!-- /.content-wrapper -->
+			<partial name="Layouts/_Footer" />
+
+			<!-- Control Sidebar -->
+			<aside class="control-sidebar control-sidebar-dark">
+				<!-- Control sidebar content goes here -->
+			</aside>
+			<!-- /.control-sidebar -->
+		</div>
+		<!-- ./wrapper -->
+
+		<partial name="Layouts/_Scripts" />
+		@RenderSection("Scripts", required: false)
+	</body>
+
+</html>

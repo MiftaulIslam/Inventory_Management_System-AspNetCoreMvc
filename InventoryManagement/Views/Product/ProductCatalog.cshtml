@@ -1,0 +1,366 @@
+﻿@model InventoryManagement.Models.ProductCatalog
+
+@{
+    ViewData["Title"] = "Product Catalog";
+}
+
+<h1>Product Catalog</h1>
+
+<p>
+    <button type='button' id="AddModalbtn" class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#Modal'>
+        Add
+        Product
+    </button>
+</p>
+
+<table class="table" id="ProductCatalogTable">
+    <thead>
+        <tr>
+
+            <th>
+                Id
+            </th>
+
+            <th>
+                CatalogTypeId
+            </th>
+            <th>
+                CatalogName
+            </th>
+
+            <th>
+                CatalogLevel
+            </th>
+
+            <th>
+                ParentId
+            </th>
+
+
+            <th>
+                ItemCount
+            </th>
+            <th>
+                InsertDate
+            </th>
+            <th>
+                Manage
+            </th>
+        </tr>
+    </thead>
+</table>
+
+<!-- Confirm Delete -->
+<div class="modal fade" id="Delete" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" id="deleteModalHeader">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" id="confirmDelete" class="btn btn-primary">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--Edit/Add Modal -->
+<div class="modal fade" id="Modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="modalheader">Modal title</h1>
+                <button type="button" id="btnclose" class="btn-close" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" id="hiddenId" asp-for="Id">
+
+                <div class="form-group">
+                    <label asp-for="CatalogName" class="control-label"></label>
+                    <input asp-for="CatalogName" required class="form-control" />
+                    <span asp-validation-for="CatalogName" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="CatalogLevel" class="control-label"></label>
+                    <input asp-for="CatalogLevel" required value=0 class="form-control" />
+                    <span asp-validation-for="CatalogLevel" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="ParentId" class="control-label"></label>
+                    <select class="form-select" required asp-for="ParentId" asp-items="ViewBag.parentcatalog"
+                        aria-label="Default select example">
+                        <option selected>Select parent Type...</option>
+                    </select>
+                    <span asp-validation-for="ParentId" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="ItemCount" class="control-label"></label>
+                    <input asp-for="ItemCount" value=0 class="form-control" />
+                    <span asp-validation-for="ItemCount" class="text-danger"></span>
+                </div>
+
+                <div class="form-group" id="InsertTime">
+                    <label asp-for="InsertDate" class="control-label"></label>
+                    <input asp-for="InsertDate" value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss")"
+                        class="form-control" disabled />
+                    <span asp-validation-for="InsertDate" class="text-danger"></span>
+                </div>
+
+                <div class="form-group" id="UpdateTime">
+                    <label asp-for="UpdateAt" class="control-label"></label>
+                    <input asp-for="UpdateAt" value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss")" class="form-control"
+                        disabled />
+                    <span asp-validation-for="UpdateAt" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="CatalogTypeId" class="control-label"></label>
+                    <select class="form-select" required asp-for="CatalogTypeId" asp-items="ViewBag.productcatalog"
+                        aria-label="Default select example">
+                        <option selected>Select Category Type...</option>
+                    </select>
+                    <span asp-validation-for="CatalogTypeId" class="text-danger"></span>
+                </div>
+
+
+                <div class="modal-footer">
+                    <button type="button" id="modalclose" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Close
+                    </button>
+                    <button type="button" id="Addbtn" class="btn btn-primary">Add</button>
+                    <button type="button" class="btn btn-primary" id="warningDelete" data-bs-toggle="modal"
+                        data-bs-target="#Delete">
+                        Delete
+                    </button>
+                    <button type="button" id="Updatebtn" class="btn btn-primary">Update</button>
+                </div>
+
+
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script>
+
+        //Getting all of the fields 
+        const HiddenId = document.getElementById("hiddenId"); //Input Id type hidden
+        const CatalogName = document.getElementById("CatalogName"); //Input Catalog Name type text
+        const CatalogLevel = document.getElementById("CatalogLevel"); //Input Catalog Level type int
+        const ParentId = document.getElementById("ParentId"); //Input Parent Id type int self-reference
+        const ItemCount = document.getElementById("ItemCount"); //input Item Count type int -- Automate later--
+        const InsertDate = document.getElementById("InsertDate"); //Input Insert Date type Date
+        const InsertSection = document.getElementById("InsertTime"); //Input Insert Date Div 
+        const UpdateDate = document.getElementById("UpdateAt"); //Input Update Date type Date
+        const UpdateSection = document.getElementById("UpdateTime"); //Input Update Date Div 
+        const CatalogTypeId = document.getElementById("CatalogTypeId"); //Input CatalogTypeId reference ProductCatalogType Model
+
+        //Get all buttions
+        const AddModalBtn = document.getElementById("AddModalbtn")
+        const AddModalHeader = document.getElementById("modalheader")
+        const AddBtn = document.getElementById("Addbtn"); //For Add Catalog
+        const UpdateBtn = document.getElementById("Updatebtn"); //For Update Catalog
+        const WarningDeleteBtn = document.getElementById("warningDelete")
+        const ConfirmDeleteBtn = document.getElementById("confirmDelete"); //For Confirm Delete Catalog
+        const DeleteModalHeader = document.getElementById("deleteModalHeader")
+
+
+        const closebtn = document.getElementById("modalclose"); //For Close Catalog
+        const closeico = document.getElementById("btnclose"); //For Close Catalog
+
+        function removeFieldValue() {
+
+            removeField(CatalogName)
+            setDVOnMultipleInput(0, CatalogLevel, ItemCount)
+            resetSelectList(ParentId, CatalogTypeId)
+        }
+
+        //Getting the fields value as formdata -- If id available then it will used for Update else it will be used for Add
+        function getInputValues() {
+            //for add
+            if (hiddenId.value == "") {
+                let form = new FormData()
+                form.append("CatalogName", CatalogName.value);
+                form.append("CatalogLevel", CatalogLevel.value);
+                form.append("ParentId", ParentId.value);
+                form.append("ItemCount", parseInt(ItemCount.value));
+                form.append("InsertDate", InsertDate.value);
+                form.append("UpdateAt", UpdateDate.value);
+                form.append("CatalogTypeId", parseInt(CatalogTypeId.value));
+                printFormData(form);
+                return form;
+            }
+            //for Update
+            else {
+                let form = new FormData()
+                form.append("Id", HiddenId.value);
+                form.append("CatalogName", CatalogName.value);
+                form.append("CatalogLevel", CatalogLevel.value);
+                form.append("ParentId", ParentId.value);
+                form.append("ItemCount", ItemCount.value);
+                form.append("InsertDate", InsertDate.value);
+                form.append("UpdateAt", UpdateDate.value);
+                form.append("CatalogTypeId", CatalogTypeId.value);
+                printFormData(form);
+                return form;
+            }
+        }
+
+
+        //for showing the specific item values during update
+        async function getEditData(...fields) {
+            //Dynamically changing the modal title
+            document.getElementById("modalheader").innerText = "Update Product Catalog";
+            document.getElementById("Updatebtn").classList.remove("d-none");  //Visible the update button
+            document.getElementById("warningDelete").classList.remove("d-none"); //Visible the Delete button
+            document.getElementById("Addbtn").classList.add("d-none"); //Hiding the Add button
+            //Storing the the specific values on fieldBody object with the help of for loop
+            let fieldBody = {};
+            for (let i = 0; i < fields.length; i++) {
+                fieldBody[i] = fields[i];
+            }
+
+        @*
+            field[0] = id
+            field[1] = catalogTypeId
+            field[2] = catalogName
+            field[3] = catalogLevel
+            field[4] = parentId
+            field[5] = itemCount
+            field[6] = insertDate
+            field[7] = updateAt
+
+            *@
+
+                //If the catalog contains parentId then the catalog will be selected by default on select list input
+                if (fieldBody[4] !== "null") {
+                // Fetch the catalog data by its parentId
+                let data = await getById("getCatalogById", fieldBody[4]);
+
+                let parentIdSelect = document.getElementById("ParentId");
+                //Checking all of the options and matching their values with the specific id. If there is a match then the option will be selected by default
+                for (let j = 0; j < parentIdSelect.options.length; j++) {
+                    let option = parentIdSelect.options[j];
+                    if (parseInt(option.value) === data.id) {
+                        option.selected = true;
+                        break;
+                    }
+                }
+
+            }
+            //Showing the CatalogType. Same process like the parentId
+            let data2 = await getById(`getProductCatalogTypeById`, fieldBody[1])
+            let categoryTypeIdSelect = CatalogTypeId
+            for (let j = 0; j < categoryTypeIdSelect.options.length; j++) {
+                let option = categoryTypeIdSelect.options[j];
+                if (parseInt(option.value) === data2.id) {
+                    option.selected = true;
+                    break;
+                }
+            }
+
+
+            HiddenId.value = parseInt(fieldBody[0]) //Passing the specific Id on the hidden Id
+            CatalogName.value = fieldBody[2] //Passing the specific CatalogName on the CatalogName input field
+            CatalogLevel.value = fieldBody[3] //Passing the specific Catalog Level on the CatalogLevel input field
+            ItemCount.value = fieldBody[5] //Passing the specific Item Count on the ItemCount input field
+            InsertDate.value = fieldBody[6] //Passing the specific InsertTime on the InsertDate input field
+        }
+
+        //For printing the form data
+        function printFormData(formData) {
+            console.log([...formData.entries()]);
+        }
+
+
+        //Dom Loaded Event
+        document.addEventListener("DOMContentLoaded", function () {
+
+            
+            //Dynamically chaning the title 
+            WarningDeleteBtn.addEventListener("click",()=>{
+                DeleteModalHeader.innerText = "Confirm Delete"
+            })
+
+
+            //Dynamically chaning the title 
+            AddModalBtn.addEventListener("click",()=>{
+                AddBtn.classList.remove("d-none")
+                UpdateBtn.classList.add("d-none");
+                WarningDeleteBtn.classList.add("d-none");
+                AddModalHeader.innerText = "Add Product Catalog"
+            })
+            //Removing field values after clicking close button
+            closebtn.addEventListener("click", () => {
+                removeFieldValue()
+            })
+            //Removing field values after clicking icon button
+            closeico.addEventListener("click", () => {
+                removeFieldValue()
+            })
+            //Event for updating Catalog
+            UpdateBtn.addEventListener("click", () => {
+
+                edit(`UpdateCatalog`, getInputValues())
+            })
+
+            //Event for Adding Catalog
+            AddBtn.addEventListener("click", () => {
+                AddData("AddCatalog", getInputValues())
+            });
+
+            //Event for deleting Catalog
+            ConfirmDeleteBtn.addEventListener("click", () => {
+                Delete(`DeleteCatalog`, HiddenId.value)
+            });
+
+            // Initialize DataTable
+            var dtTable = document.getElementById('ProductCatalogTable'); //specifing the table
+            //if the talbe exists then create a jquery data table
+            if (dtTable) {
+                var dataTable = new DataTable(dtTable, {
+                    ajax: {
+                        url: "GetProductCatalogs",
+                        type: "POST",
+                        dataType: "json"
+                    },
+                    columns: [
+                        { data: "id", name: "Id", autoWidth: true },
+                        { data: "catalogTypeId", name: "CatalogTypeId", autoWidth: true },
+                        { data: "catalogName", name: "CatalogName", autoWidth: true },
+                        { data: "catalogLevel", name: "CatalogLevel", autoWidth: true },
+                        { data: "parentId", name: "ParentId", autoWidth: true },
+                        { data: "itemCount", name: "ItemCount", autoWidth: true },
+                        { data: "insertDate", name: "insertDate", autoWidth: true },
+                        {
+                            //Adding an Extra button for Edit/Delete the specific Catalog
+                            render: function (data, type, row, meta) {
+                                return `<button type='button'onclick="getEditData('${dataTable.row(meta.row).data().id}','${dataTable.row(meta.row).data().catalogTypeId}','${dataTable.row(meta.row).data().catalogName}','${dataTable.row(meta.row).data().catalogLevel}','${dataTable.row(meta.row).data().parentId}','${dataTable.row(meta.row).data().itemCount}','${dataTable.row(meta.row).data().insertDate}','${dataTable.row(meta.row).data().updateAt}',)" class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#Modal'>
+                                            Edit
+                                        </button>`
+                            }
+                        },
+                    ]
+                });
+            }
+
+        });
+    </script>
+
+
+}

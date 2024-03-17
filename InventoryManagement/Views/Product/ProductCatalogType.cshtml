@@ -1,0 +1,258 @@
+﻿@model InventoryManagement.Models.ProductCatalogType
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Product Catalog Type</h1>
+
+<p>
+    <button type='button' id="AddModalbtn" class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#Modal'>Add
+        Product</button>
+</p>
+<table class="table" id="ProductCatalogTypeTable">
+    <thead>
+        <tr>
+
+            <th>
+                Id
+            </th>
+            <th>
+                CatalogType
+            </th>
+            <th>
+                InsertDate
+            </th>
+
+            <th>
+                UpdatedAt
+            </th>
+
+            <th>
+                Manage
+            </th>
+        </tr>
+    </thead>
+</table>
+<!-- Button trigger modal -->
+<!-- Button trigger modal -->
+
+
+<!-- Confirm Delete -->
+<div class="modal fade" id="Delete" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" id="confirmDelete" class="btn btn-primary">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<!--Edit/Add Modal -->
+<div class="modal fade" id="Modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="modalheader">Modal title</h1>
+                <button type="button" id="btnclose" class="btn-close" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" id="hiddenId" asp-for="Id">
+                <div class="form-group">
+                    <label asp-for="CatalogType" class="control-label"></label>
+                    <input asp-for="CatalogType" id="AddType" class="form-control" required />
+                    <span asp-validation-for="CatalogType" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="InsertDate" class="control-label"></label>
+                    <input asp-for="InsertDate" id="AddDate" value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss")"
+                        class="form-control" disabled />
+                    <span asp-validation-for="InsertDate" class="text-danger"></span>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="modalclose" class="btn btn-secondary"
+                        data-bs-dismiss="modal">Close</button>
+                    <button type="button" id="Addbtn" class="btn btn-primary">Add</button>
+                    <button type="button" class="btn btn-primary" id="warningDelete" data-bs-toggle="modal"
+                        data-bs-target="#Delete">
+                        Delete
+                    </button>
+                    <button type="button" id="Updatebtn" class="btn btn-primary">Update</button>
+                </div>
+
+
+
+            </div>
+
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script>
+
+        //To pass the previous insertdate while updating an item
+        let InsertDate;
+        @* //Remove fields -- used for removing the fields value while closing the modal
+        function removeField(...fields) {
+            fields.forEach(field => {
+                field.value = "";
+            });
+        } *@
+
+        //Event for removing the field value
+        document.getElementById("btnclose").addEventListener('click', () => {
+            removeField(document.getElementById('AddType'))
+        })
+        //event for removing the field value
+        document.getElementById("modalclose").addEventListener("click", () => {
+            removeField(document.getElementById("AddType"))
+
+        })
+
+
+        //Setting up create Data modal
+        document.getElementById("AddModalbtn").addEventListener('click', () => {
+            //Changing the modal header
+            document.getElementById("modalheader").innerText = "Add ProductCatalogType"
+            //While adding update button will be hidden
+            document.getElementById("Updatebtn").classList.add("d-none")
+            //While adding delete button will be hidden
+            document.getElementById("warningDelete").classList.add("d-none")
+            //While adding Add button will be visible
+            document.getElementById("Addbtn").classList.remove("d-none")
+
+
+        })
+
+
+
+        //for showing the specific item values during update
+        function getEditData(...fields) {
+            //changing the modal header
+            document.getElementById("modalheader").innerText = "Update Modal"
+            //While updating the update button will be visible
+            document.getElementById("Updatebtn").classList.remove("d-none")
+            //While updating the delete button will be visible
+            document.getElementById("warningDelete").classList.remove("d-none")
+            //While updating the Add button will be hidden
+            document.getElementById("Addbtn").classList.add("d-none")
+            //blank Object
+            let fieldBody = {}
+            //storing the data on the blank object
+            for (let i = 0; i < fields.length; i++) {
+                fieldBody[i] = fields[i]
+            }
+            //Passing the id on the hiddenId field
+            document.getElementById("hiddenId").value = fieldBody[2]
+            //Passing the specific catalog insertdate on the insertdate variable which will help to submiting the form without any errors
+            InsertDate = fieldBody[1]
+            //Passing the specific CatalogName on the input field 
+            document.getElementById("AddType").value = fieldBody[0]
+
+        }
+
+        
+
+        //Creating form data to pass the values on controller argument
+        function getInputValues() {
+            //While adding an item we do not need to pass the Id but when we want to update an item we need to pass the Id
+            //That's why if the hidden id is null then it will be a add request else update request
+            if (document.getElementById("hiddenId").value == '') {
+                //First argument will be the model property name and second argument is the value
+                let formData = new FormData();
+                formData.append("CatalogType", document.getElementById("AddType").value);
+                formData.append("InsertDate", document.getElementById("AddDate").value);
+                formData.append("UpdatedAt", document.getElementById("AddDate").value);
+                //Debug purpose
+                printFormData(formData);
+                return formData;
+            } else {
+
+                //First argument will be the model property name and second argument is the value
+                let formData = new FormData();
+                formData.append("Id", document.getElementById("hiddenId").value);
+                formData.append("CatalogType", document.getElementById("AddType").value);
+                formData.append("InsertDate", InsertDate);
+                formData.append("UpdatedAt", document.getElementById("AddDate").value);
+                //Debug purpose
+                printFormData(formData);
+                return formData;
+            }
+        }
+
+
+        //For printing the form data
+        function printFormData(formData) {
+            
+            console.log([...formData.entries()]);
+        }
+
+        //DOM Loaded
+        document.addEventListener("DOMContentLoaded", function () {
+
+
+            //Event for adding an item
+            document.getElementById("Addbtn").addEventListener("click", () => {
+                AddData("AddCatalogType", getInputValues())
+            });
+
+
+            //Event for updating an item modal
+            document.getElementById("Updatebtn").addEventListener("click", () => {
+                console.log(getInputValues())
+                edit("UpdateCatalogType", getInputValues())
+            })
+
+
+            //event for deleting an item
+            document.getElementById("confirmDelete").addEventListener("click", () => {
+                Delete("DeleteCatalogType", document.getElementById("hiddenId").value)
+            })
+
+
+            // Initialize DataTable
+            var dtTable = document.getElementById('ProductCatalogTypeTable'); //specifing the table
+            //if the talbe exists then create a jquery data table
+            if (dtTable) {
+                var dataTable = new DataTable(dtTable, {
+                    ajax: {
+                        url: "GetProductCatalogTypes",
+                        type: "POST",
+                        dataType: "json"
+                    },
+                    columns: [
+                        { data: "id", name: "Id", autoWidth: true },
+                        { data: "catalogType", name: "CatalogType", autoWidth: true },
+                        { data: "insertDate", name: "InsertDate", autoWidth: true },
+                        { data: "updatedAt", name: "UpdatedAt", autoWidth: true },
+                        {
+                            render: function (data, type, row, meta) {
+                                return `<button type='button' onclick="getEditData('${dataTable.row(meta.row).data().catalogType}','${dataTable.row(meta.row).data().insertDate}','${dataTable.row(meta.row).data().id}',)"
+                                                        class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#Modal'>Edit</button>`
+                            }
+                        },
+                    ]
+                });
+            }
+
+        });
+
+    </script>
+
+
+}

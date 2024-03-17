@@ -1,0 +1,627 @@
+﻿@model InventoryManagement.Models.Product
+
+@{
+    ViewData["Title"] = "Product";
+}
+
+<h1>Product </h1>
+
+<p>
+    <button type='button' id="AddModalbtn" class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#Modal'>
+        Add
+        Product
+    </button>
+</p>
+<table class="table" id="ProductTable">
+    <thead>
+        <tr>
+
+            <th>
+                Id
+            </th>
+
+            <th>
+                ProductName
+            </th>
+
+            <th>
+                Description
+            </th>
+
+
+            <th>
+                Warranty
+            </th>
+            <th>
+                Note
+            </th>
+
+            <th class="text-center">
+                ProductImage
+            </th>
+
+            <th>
+                ProductCatalogId
+            </th>
+            <th>
+                SellingPrice
+            </th>
+
+            <th>
+                InsertDate
+            </th>
+
+            <th>
+                UpdatedAt
+            </th>
+
+            <th>
+                Manage Product
+            </th>
+
+        </tr>
+    </thead>
+</table>
+
+
+<!-- Confirm Delete -->
+<div class="modal fade" id="Delete" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" id="DeleteModalHeader">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" id="confirmDelete" class="btn btn-primary">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--Edit/Add Modal -->
+<div class="modal fade" id="Modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="modalheader">Modal title</h1>
+                <button type="button" id="btnclose" class="btn-close" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" id="hiddenId" asp-for="Id">
+
+                    <div class="form-group">
+                        <label asp-for="ProductName" class="control-label"></label>
+                        <input asp-for="ProductName" required class="form-control" />
+                        <span asp-validation-for="ProductName" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Description" class="control-label"></label>
+                        <input asp-for="Description" required class="form-control" />
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Warranty" class="control-label"></label>
+
+                        <input asp-for="Warranty" required class="form-control" />
+                        <span asp-validation-for="Warranty" class="text-danger"></span>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label asp-for="Note" class="control-label"></label>
+
+                        <input asp-for="Note" required class="form-control" />
+                        <span asp-validation-for="Note" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="SellingPrice" class="control-label"></label>
+
+                        <input asp-for="SellingPrice" required class="form-control" />
+                        <span asp-validation-for="SellingPrice" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group" id="InsertDateSection">
+                        <label asp-for="InsertDate" class="control-label"></label>
+
+                        <input asp-for="InsertDate" value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss")" disabled
+                            class="form-control" />
+                        <span asp-validation-for="InsertDate" class="text-danger"></span>
+                    </div>
+                    <div class="form-group" id="UpdateAtSection">
+                        <label asp-for="UpdatedAt" class="control-label"></label>
+                        <input asp-for="UpdatedAt" value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss")" disabled
+                            class="form-control" />
+                        <span asp-validation-for="UpdatedAt" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="ProductImage" class="control-label"></label>
+                        <input type="file" name="image" id="ProductImage" class="form-control" />
+                        <img src="~/dist/img/no-image-icon-15.png" id="previewImage" style="width:100px;height:100px;"
+                            alt="">
+                        <span asp-validation-for="ProductImage" class="text-danger"></span>
+                        <p id="ProductImageString"></p>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label">Product Catalog Type</label>
+                        <select id="ProductCatalogType" class="form-select" required
+                            aria-label="Default select example">
+                            <option value="default" selected>Select Categor
+                                y Type...</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Parent Catalog</label>
+                        <select class="form-select" id="ParentCatalogType" disabled aria-label="Default select example">
+                            <option value="default" selected>Select Category Type...</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ProductCatalogId" class="control-label">Product Catalog</label>
+                        <select class="form-select" disabled required asp-for="ProductCatalogId"
+                            aria-label="Default select example">
+                            <option value="default" selected>Select Category Type...</option>
+                        </select>
+                        <span asp-validation-for="ProductCatalogId" class="text-danger"></span>
+                    </div>
+                </form>
+
+                <div class="modal-footer">
+                    <button type="button" id="modalclose" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Close
+                    </button>
+                    <button type="button" id="Addbtn" class="btn btn-primary">Add</button>
+                    <button type="button" class="btn btn-primary" id="warningDelete" data-bs-toggle="modal"
+                        data-bs-target="#Delete">
+                        Delete
+                    </button>
+                    <button type="button" id="Updatebtn" class="btn btn-primary">Update</button>
+                </div>
+
+
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        //Getting the input fields
+        const HiddenId = document.getElementById("hiddenId") //Hidden Id
+        const ProductName = document.getElementById("ProductName") //Input field text Product Name
+        const Description = document.getElementById("Description") //Input field text Description
+        const Image = document.getElementById("ProductImage") //Input field File upload Product Image
+        const Warranty = document.getElementById("Warranty")  //Input fIeld Text Warranty
+        const Note = document.getElementById("Note") //Input field text Note 
+        const SellingPrice = document.getElementById("SellingPrice") //Input field text Selling Price
+        const InsertDate = document.getElementById("InsertDate") //Input field date-time Insert Date
+        const InsertDateSection = document.getElementById("InsertDateSection") //Div Insert Date Section
+        const UpdatedAt = document.getElementById("UpdatedAt") //Input Field date-time Updated At
+        const UpdatedAtSection = document.getElementById("UpdatedAtSection") //Div Updated At Section
+        const ProductCatalogType = document.getElementById("ProductCatalogType") //Select List Product Catalog Type
+        const ParentCatalogType = document.getElementById("ParentCatalogType") //Select List Parent Catalog Type
+        const ProductCatalogId = document.getElementById("ProductCatalogId") //Select List Product Catalog
+
+        //Getting Buttons
+        const AddModalBtn = document.getElementById("AddModalbtn") //Add modal pop up button
+        const AddBtn = document.getElementById("Addbtn") //Add Product Button
+        const UpdateBtn = document.getElementById("Updatebtn") //Update product button
+        const WarningDeleteBtn = document.getElementById("warningDelete") //Warning delete modal pop up button
+        const ConfirmDeleteBtn = document.getElementById("confirmDelete") //Confirm delete Button
+
+        //Close buttons of modal
+        const ModalCloseBtn = document.getElementById("modalclose")
+        const ModalCloseIcon = document.getElementById("btnclose")
+
+        //Title of modals
+        const ModalHeader = document.getElementById("modalheader")
+        const DeleteModalHeader = document.getElementById("DeleteModalHeader")
+
+     
+        //Creating FromData for passing the input field values to controller
+        function getInputValues() {
+            if (HiddenId.value == "") {
+                let form = new FormData()
+                form.append("ProductName", ProductName.value)
+                form.append("Description", Description.value)
+                form.append("Warranty", Warranty.value)
+                form.append("Note", Note.value)
+
+                form.append("Image", Image.files[0])
+                form.append("ProductImage", "Greeting")
+                form.append("ProductCatalogId", ProductCatalogId.value)
+                form.append("SellingPrice", SellingPrice.value)
+                form.append("InsertDate", InsertDate.value)
+                form.append("UpdatedAt", UpdatedAt.value)
+                printFormData(form)
+                return form;
+            } else {
+
+                let productImageBaseUrl = document.getElementById("previewImage").src
+                // Find the index of the comma
+                const commaIndex = productImageBaseUrl.indexOf(',');
+
+                // Extract the base64 string
+                const base64String = productImageBaseUrl.substring(commaIndex + 1);
+
+                console.log(base64String);
+                let form = new FormData()
+                form.append("Id", HiddenId.value)
+                form.append("ProductName", ProductName.value)
+                form.append("Description", Description.value)
+                form.append("Warranty", Warranty.value)
+                form.append("Note", Note.value)
+                form.append("Image", Image.files[0])
+                form.append("ProductImage", base64String)
+                form.append("ProductCatalogId", ProductCatalogId.value)
+                form.append("SellingPrice", SellingPrice.value)
+                form.append("InsertDate", InsertDate.value)
+                form.append("UpdatedAt", UpdatedAt.value)
+                printFormData(form)
+                return form;
+            }
+        }
+        
+        
+        //for showing the specific item values during update
+        async function getEditData(...fields) {
+            //When Edit button is clicked enable all of the select list fields
+            ProductCatalogType.removeAttribute('disabled');
+            ParentCatalogType.removeAttribute('disabled');
+            ProductCatalogId.removeAttribute('disabled');
+            //Dynamically changing the modal title
+            document.getElementById("modalheader").innerText = "Update Modal";
+            document.getElementById("Updatebtn").classList.remove("d-none");  //Visible the update button
+            document.getElementById("warningDelete").classList.remove("d-none"); //Visible the Delete button
+            document.getElementById("Addbtn").classList.add("d-none"); //Hiding the Add button
+            //Storing the the specific values on fieldBody object with the help of for loop
+            let fieldBody = {};
+            for (let i = 0; i < fields.length; i++) {
+                fieldBody[i] = fields[i];
+            }
+            console.log(fieldBody)
+        @*  field values and their properties 
+            field[0] = id
+            field[1] = ProductName
+            field[2] = Description
+            field[3] = Warranty
+            field[4] = Note
+            field[5] = ProductImage
+            field[6] = ProductCatalogId
+            field[7] = SellingPrice
+            field[8] = InsertDate
+            field[9] = UpdatedAt
+            *@
+
+            // Fetching the specific product catalog 
+            let data = await getById("product/getCatalogById", fieldBody[6]);
+
+            
+            //By default the ProductCatalogType selectlist have no options. The options need to create. But there will be a default option so the length will be 1
+            if (ProductCatalogType.options.length === 1) {
+                //Getting list of product catalog types
+                let gettingcatalogtypes = await getData("product/GetProductCatalogTypes")
+
+                //Creating select list options with value id and inner-text CatalogName
+                gettingcatalogtypes.data.map(item => {
+                    generateSelectListOptions(ProductCatalogType, item.catalogType, item.id)
+                })
+
+                //The specific catalog type be selected by default.  
+                for (let j = 0; j < ProductCatalogType.options.length; j++) {
+                    let option = ProductCatalogType.options[j];
+                    if (parseInt(option.value) === data.catalogTypeId) {
+                        option.selected = true;
+                        break;
+                    }
+                }
+
+                //Getting all of the catalogs
+                let gettingCatalogs = await getData("product/GetProductCatalogs")
+                
+                //Filtering the catalogs and taking the parent catalogs only, that are refering the specific product catalog type. 
+                let filteringForParentCatalogs = gettingCatalogs.data.filter(catalog => {
+                    return catalog.catalogTypeId === parseInt(ProductCatalogType.value) && catalog.catalogLevel === 1;
+                });
+                
+                //By default the ParentCatalogType selectlist have no options. The options need to create. But there will be a default option so the length will be 1
+                if (ParentCatalogType.options.length === 1) {
+                    
+                    //Creating select list options with value id and inner-text CatalogName
+                    filteringForParentCatalogs.map(catalog => {
+                        generateSelectListOptions(ParentCatalogType, catalog.catalogName, catalog.id)
+                    })
+
+                }
+
+                //The specific parent catalog type be selected by default.  
+                for (let j = 0; j < ParentCatalogType.options.length; j++) {
+                    let option = ParentCatalogType.options[j];
+                    if (parseInt(option.value) === data.parentId) {
+                        option.selected = true;
+                        break;
+                    }
+                }
+                //Filtering to get the child catalogs only, that are refering the specific parent product catalog. 
+                let filteringForProductCatalogs = gettingCatalogs.data.filter(catalog => {
+                    return catalog.parentId === parseInt(ParentCatalogType.value) && catalog.catalogLevel === 0;
+                })
+                //By default the ParentCatalogType selectlist have no options. The options need to create. But there will be a default option so the length will be 1
+                if (ProductCatalogId.options.length == 1) {
+                    
+                    //Creating select list options with value id and inner-text CatalogName
+                    filteringForProductCatalogs.map(catalog => {
+                        generateSelectListOptions(ProductCatalogId, catalog.catalogName, catalog.id)
+                    })
+                }
+                
+                //The specific parent catalog type be selected by default.  
+                for (let j = 0; j < ProductCatalogId.options.length; j++) {
+                    let option = ProductCatalogId.options[j];
+                    if (parseInt(option.value) === data.id) {
+                        option.selected = true;
+                        break;
+                    }
+                }
+
+                //Event if someone change the product catalog type
+                ProductCatalogType.addEventListener("change", async () => {
+
+                    ProductCatalogId.value = 'default';
+                    ParentCatalogType.removeAttribute("disabled") 
+                    ProductCatalogId.setAttribute("disabled", true) //The product catalog should be disabled because the parent catalog is not selected.
+                    removeAllOptions(ParentCatalogType); //Removing options to generate new options depends on the product catalog type
+                    // If the product catalog type is not selected then the other fields will be disabled by default.
+                    if (ProductCatalogType.value === 'default') {
+                        ParentCatalogType.setAttribute("disabled", true)
+                        ProductCatalogId.setAttribute("disabled", true)
+                        ProductCatalogId.value = "default";
+                    }
+
+                    // Getting all of the catalogs to generate opions
+                    let gettingCatalogs = await getData("product/GetProductCatalogs")
+
+                    //Filtering the catalogs and return only the parent catalogs refering to the product catalog type
+                    let filteringForParentCatalogs = gettingCatalogs.data.filter(catalog => {
+                        return catalog.catalogTypeId === parseInt(ProductCatalogType.value) && catalog.catalogLevel === 1;
+                    });
+                    
+                    if (ParentCatalogType.options.length === 1) {
+                        //Generating options
+                        filteringForParentCatalogs.map(catalog => {
+                            generateSelectListOptions(ParentCatalogType, catalog.catalogName, catalog.id)
+                        })
+                    }
+                })
+
+
+                //Same procedure happens for the parentcatalog and product catalog
+                 ParentCatalogType.addEventListener("change", async () => {
+                        ProductCatalogId.removeAttribute("disabled")
+                        //removing options to generate new options
+                        removeAllOptions(ProductCatalogId)
+                        //if no parent option selected then disable the product catalog optin
+                        if (ParentCatalogType.value === 'default') {
+                            ProductCatalogId.setAttribute("disabled", true)
+                        }
+
+                        //Filtering to get the product catalogs
+                        let filteringForProductCatalogs = gettingCatalogs.data.filter(catalog => {
+                            return catalog.parentId === parseInt(ParentCatalogType.value) && catalog.catalogLevel === 0;
+                        })
+                        //generating options
+                            filteringForProductCatalogs.map(catalog => {
+                                generateSelectListOptions(ProductCatalogId, catalog.catalogName, catalog.id)
+                            })
+                            
+                        
+
+                    })
+
+            }
+
+ 
+            HiddenId.value = parseInt(fieldBody[0]) //Passing the specific Id on the hidden Id
+            ProductName.value = fieldBody[1] //Passing the specific CatalogName on the CatalogName input field
+            Description.value = fieldBody[2] //Passing the specific Catalog Level on the CatalogLevel input field
+            Warranty.value = fieldBody[3] //Passing the specific Item Count on the ItemCount input field
+            Note.value = fieldBody[4] //Passing the specific InsertTime on the InsertDate input field
+            document.getElementById("previewImage").src = `data:image/jpeg;base64,${fieldBody[5]}`
+            fieldBody[6] = ProductCatalogId.value
+            SellingPrice.value = fieldBody[7] //Passing the specific InsertTime on the InsertDate input field
+            InsertDate.value = fieldBody[8] //Passing the specific InsertTime on the InsertDate input field
+        }
+
+            //Cascading Select List for selecting Product Catalog
+            ProductCatalogType.addEventListener("click", async () => {
+                //Section: Generate select list option dynamically. Depending on the parent selected value
+                //By default the product-catalog-type have no option. only the default message option will available means length is 1
+                if (ProductCatalogType.options.length == 1) {
+                    
+                    //Getting all of the product catalog types
+                    let gettingcatalogtypes = await getData("product/GetProductCatalogTypes")
+                    //generating options
+                    gettingcatalogtypes.data.map(item => {
+                        generateSelectListOptions(ProductCatalogType, item.catalogType, item.id)
+                    })
+                    
+
+                    //If ProductCatalogType value changed
+                    ProductCatalogType.addEventListener("change", async () => {
+
+                        ParentCatalogType.removeAttribute("disabled")//Parent select list will be available
+                        removeAllOptions(ParentCatalogType); //Removing the options to avoiding conflicts
+                        //If the product catalog type is not selected then the parent catalog selectlist will be disabled
+                        if (ProductCatalogType.value === 'default') {
+                            ParentCatalogType.setAttribute("disabled", true)
+                            ProductCatalogId.setAttribute("disabled", true)
+                            ProductCatalogId.value = "default";
+                        }
+                        //Getting all of the catalogs
+                        let gettingCatalogs = await getData("product/GetProductCatalogs")
+                        //filtering the catalogs to get the parent catalogs
+                        let filteringForParentCatalogs = gettingCatalogs.data.filter(catalog => {
+                            return catalog.catalogTypeId === parseInt(ProductCatalogType.value) && catalog.catalogLevel === 1;
+                        });
+
+
+                        if (ParentCatalogType.options.length == 1) {
+                            //Generating options
+                            filteringForParentCatalogs.map(catalog => {
+                                generateSelectListOptions(ParentCatalogType, catalog.catalogName, catalog.id)
+                            })
+
+                        }
+
+                        //If parent catalog is changed
+                        ParentCatalogType.addEventListener("change", async () => {
+                            ProductCatalogId.removeAttribute("disabled")//The product catalog will be available
+                            //Removing the optons to avoid conflicts
+                            removeAllOptions(ProductCatalogId)
+                            //If the parent catalog is not selected, then the product catalog will be disabled
+                            if (ParentCatalogType.value === 'default') {
+                                ProductCatalogId.setAttribute("disabled", true)
+                            }
+
+                            //Filtering the catalogs to get the childs catalogs or product catalogs
+                            let filteringForProductCatalogs = gettingCatalogs.data.filter(catalog => {
+                                return catalog.parentId === parseInt(ParentCatalogType.value) && catalog.catalogLevel === 0;
+                            })
+
+                            if (ProductCatalogId.options.length == 1) {
+                                //Generating options
+                                filteringForProductCatalogs.map(catalog => {
+                                    generateSelectListOptions(ProductCatalogId, catalog.catalogName, catalog.id)
+                                })
+                            }
+                        })
+
+                    })
+
+                }
+            })
+
+            //Event: If someone upload an image
+            Image.addEventListener('change', function () {
+                //Getting the file
+                const file = this.files[0];
+                //If the file is exists then show the file on preview Image section, else show something else(adding later)
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function () {
+                        previewImage.src = reader.result;
+                    };
+                    reader.readAsDataURL(file);
+                    document.getElementById("previewImage").classList.remove("d-none")
+                }
+            });
+
+            
+        document.addEventListener("DOMContentLoaded", () => {
+
+           
+            //If close button is clicked remove the fields value 
+             ModalCloseBtn.addEventListener("click", () =>{
+                removeField(ProductName, Warranty, Description,Note, SellingPrice)
+                resetSelectList(ParentCatalogType, ProductCatalogType, ProductCatalogId)
+            })
+            
+            //If close icon is clicked remove the fields value 
+            ModalCloseIcon.addEventListener("click", () =>{
+                removeField(ProductName, Warranty, Description,Note, SellingPrice)
+                
+                resetSelectList(ParentCatalogType, ProductCatalogType, ProductCatalogId)
+            })
+            
+            //If Add Modal Button is clicked remove update and delete button and change the modal title dynamically
+            AddModalBtn.addEventListener("click", () =>{
+                modalheader.innerText = "Add Product"
+                AddBtn.classList.remove("d-none")
+                UpdateBtn.classList.add("d-none");
+                WarningDeleteBtn.classList.add("d-none");
+            })
+
+
+            //If Warning Delete Modal Button is clicked remove update and add button and change the modal title dynamically
+            WarningDeleteBtn.addEventListener("click", ()=> {
+                DeleteModalHeader.innerText="Confirm Delete" 
+                })
+            
+            //Handling Add Request
+            AddBtn.addEventListener("click", () => {
+                getInputValues();
+                AddData("product/AddProduct", getInputValues());
+            })    //If close button is clicked remove the fields value 
+           //Handling Update request
+            UpdateBtn.addEventListener("click", () => {
+                getInputValues()
+                fetch("product/UpdateProduct", {
+                    method: "POST",
+                    body: getInputValues()
+                }).then(response => response.json()).then(data => console.log(data)).catch(e => console.log(e))
+            })
+
+            //Handling Delete Request
+            ConfirmDeleteBtn.addEventListener("click", () => {
+                Delete("product/DeleteProduct", HiddenId.value)
+            })
+
+            var dtTable = document.getElementById('ProductTable'); //specifing the table
+            //if the talbe exists then create a jquery data table
+            if (dtTable) {
+                var dataTable = new DataTable(dtTable, {
+                    ajax: {
+                        url: "product/GetProducts",
+                        type: "POST",
+                        dataType: "json"
+                    },
+                    columns: [
+                        { data: "id", name: "Id", autoWidth: true },
+                        { data: "productName", name: "ProductName", autoWidth: true },
+                        { data: "description", name: "Description", autoWidth: true },
+                        { data: "warranty", name: "Warranty", autoWidth: true },
+                        { data: "note", name: "Note", autoWidth: true },
+                        {
+                            data: "productImage",
+                            name: "ProductImage",
+                            autoWidth: true,
+                            render: function (data, type, row) {
+                                if (type === 'display' && data != null) {
+                                    return '<img src="data:image/jpeg;base64,' + data + '" style="width:100px;height:100px;"/>';
+                                }
+                                return '';
+                            }
+                        },
+                        { data: "productCatalogId", name: "ProductCatalogId", autoWidth: true },
+                        { data: "sellingPrice", name: "SellingPrice", autoWidth: true },
+                        { data: "insertDate", name: "InsertDate", autoWidth: true },
+                        { data: "updatedAt", name: "UpdatedAt", autoWidth: true },
+                        {
+                            //Adding an Extra button for Edit/Delete the specific Catalog
+                            render: function (data, type, row, meta) {
+                                return `<button type='button'onclick="getEditData('${dataTable.row(meta.row).data().id}','${dataTable.row(meta.row).data().productName}','${dataTable.row(meta.row).data().description}','${dataTable.row(meta.row).data().warranty}','${dataTable.row(meta.row).data().note}','${dataTable.row(meta.row).data().productImage}','${dataTable.row(meta.row).data().productCatalogId}','${dataTable.row(meta.row).data().sellingPrice}','${dataTable.row(meta.row).data().insertDate}','${dataTable.row(meta.row).data().updateAt}',)" class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#Modal'>
+                                                                                                    Edit
+                                                                                                </button>`
+                            }
+                        },
+                    ]
+                });
+            }
+        })
+
+    </script>
+}
