@@ -22,29 +22,84 @@ namespace InventoryManagement.Controllers
 
         //Sector: Product Stock
         //View
-        public IActionResult ManageStock(){
+        public IActionResult ManageStock(int id)
+        {
+            ViewData["Purchase"] = new SelectList(_context.Purchases, "Id", "MemoNumber");
+            ViewData["Product"] = new SelectList(_context.Products, "Id", "ProductName");
+            ViewData["Id"] = id;
             return View();
         }
-        
+
         //For Jquery DataTable
-        public JsonResult GetStock(){
+        [HttpPost]
+        public JsonResult GetStock()
+        {
             var stocks = _context.ProductStocks.ToList();
-            return Json(new {Data=stocks});
+            return Json(new { Data = stocks });
         }
 
 
+
+        [HttpPost]
+        public JsonResult GetStocksById(int id)
+        {
+            var stocks = _context.ProductStocks.Where(s => s.ProductId == id).ToList();
+            return Json(new { Data = stocks });
+        }
+
         //Get a specific stock
-        public IActionResult GetStockById(int id){
-            if (id <= 0)return BadRequest("Invalid Id");
+        public IActionResult GetStockById(int id)
+        {
+            if (id <= 0) return BadRequest("Invalid Id");
             var stocks = _context.ProductStocks.Find(id);
 
-            if (stocks != null){
+            if (stocks != null)
+            {
                 return Json(stocks);
             }
-            
+
             return Json("Something went wrong!");
         }
 
+        //Update Productstock
+        [HttpPost]
+        public IActionResult UpdateProductStock(ProductStock productstock)
+        {
+
+            if (productstock == null) return Json("Invalid Credentials");
+
+            var id = productstock.Id;
+            if (productstock.ProductCode != "")
+            {
+                var ExistingProductStock = _context.ProductStocks.Find(id);
+                if (ExistingProductStock == null) return BadRequest("Product not found");
+
+                // Set insert and update dates
+                ExistingProductStock.SellingListId = productstock.SellingListId;
+                ExistingProductStock.IsSold = productstock.IsSold;
+                ExistingProductStock.IsDamage = productstock.IsDamage;
+
+                //    _context.Entry(ExistingProduct).State = EntityState.Detached;
+                // Add the product to the database
+                _context.ProductStocks.Update(ExistingProductStock);
+                _context.SaveChanges();
+
+                return Json("Successfully updated product");
+            }
+            else
+            {
+                // Handle invalid model state
+                var errors = ModelState.Values.SelectMany(v => v.Errors)
+                                               .Select(e => e.ErrorMessage)
+                                               .ToList();
+                return Json($"Failed to create product due to invalid model state: {string.Join(", ", errors)}");
+            }
+        }
+
+
+
+        //Section: Products
+        //View for product
         public IActionResult ManageProduct()
         {
             ViewData["productcatalog"] = new SelectList(_context.ProductCatalog, "Id", "CatalogName");
@@ -52,7 +107,7 @@ namespace InventoryManagement.Controllers
             return View();
         }
 
-
+        //Get Products for Datatable
         [HttpPost]
         public JsonResult GetProducts()
         {
@@ -62,7 +117,14 @@ namespace InventoryManagement.Controllers
         }
 
 
-        //Add catalog
+        public IActionResult GetProductById(int id)
+        {
+            var product = _context.Products.Find(id);
+            if (product == null) return NotFound("Product not found");
+            return Json(product);
+        }
+
+        //Add Product
         [HttpPost]
         public IActionResult AddProduct(Product product)
         {
@@ -98,14 +160,14 @@ namespace InventoryManagement.Controllers
                 return Json($"Failed to create product due to invalid model state: {string.Join(", ", errors)}");
             }
         }
-        //Update catalog
+        //Update Product
         [HttpPost]
         public IActionResult UpdateProduct(Product product)
         {
 
             if (product == null) return Json("Invalid Credentials");
-            
-                var id = product.Id;
+
+            var id = product.Id;
             if (product.ProductName != "")
             {
                 var ExistingProduct = _context.Products.Find(id);
@@ -130,7 +192,7 @@ namespace InventoryManagement.Controllers
                 ExistingProduct.ProductCatalogId = product.ProductCatalogId;
                 ExistingProduct.UpdatedAt = DateTime.Today;
 
-            //    _context.Entry(ExistingProduct).State = EntityState.Detached;
+                //    _context.Entry(ExistingProduct).State = EntityState.Detached;
                 // Add the product to the database
                 _context.Products.Update(ExistingProduct);
                 _context.SaveChanges();
@@ -146,6 +208,8 @@ namespace InventoryManagement.Controllers
                 return Json($"Failed to create product due to invalid model state: {string.Join(", ", errors)}");
             }
         }
+
+        //Delete Product
 
         [HttpPost]
         public IActionResult DeleteProduct(int id)
@@ -171,7 +235,7 @@ namespace InventoryManagement.Controllers
         }
 
 
-
+        //Section: Product Catalog
         //View for ProductCatalog
         public IActionResult ProductCatalog()
         {
@@ -207,6 +271,14 @@ namespace InventoryManagement.Controllers
                 catalog.InsertDate = DateTime.Today;
                 catalog.UpdateAt = DateTime.Today;
                 //Other fields are ok so we can add the object to our database
+                if (catalog.ParentId == null)
+                {
+                    catalog.CatalogLevel = 1;
+                }
+                else
+                {
+                    catalog.CatalogLevel = 0;
+                }
                 _context.ProductCatalog.Add(catalog);
                 _context.SaveChanges();
                 return Json("Successfully created product catalog");

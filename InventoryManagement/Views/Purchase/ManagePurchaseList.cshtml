@@ -1,0 +1,409 @@
+@model InventoryManagement.Models.PurchaseList
+
+@{
+    ViewData["Title"] = "PurchaseList";
+}
+<h1>Manage PurchaseList</h1>
+<p>
+    <button type='button' id="AddModalbtn" class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#Modal'>
+        Add
+        Purchase List
+    </button>
+</p>
+
+<table class="table table-striped nowrap" style="width:100%" id="VendorTable">
+    <thead>
+        <tr>
+
+            <th>Id</th>
+            <th>Description</th>
+            <th>Warranty</th>
+            <th>Note</th>
+            <th>SellingPrice</th>
+            <th>PurchasePrice</th>
+            <th>PurchaseItemTime</th>
+            <th>Purchase Memo</th>
+            <th>Product</th>
+        </tr>
+    </thead>
+</table>
+
+
+<!-- Confirm Delete -->
+<div class="modal fade" id="Delete" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" id="DeleteModalHeader">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" id="confirmDelete" class="btn btn-primary">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Edit/Add Modal -->
+<div class="modal fade" id="Modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="modalheader">Modal title</h1>
+                <button type="button" id="btnclose" class="btn-close" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" id="hiddenId" asp-for="Id">
+
+                    <div class="form-group">
+                        <label asp-for="Description" class="control-label"></label>
+                        <input asp-for="Description" class="form-control" />
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Warranty" class="control-label"></label>
+                        <input asp-for="Warranty" class="form-control" />
+                        <span asp-validation-for="Warranty" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Note" class="control-label"></label>
+
+                        <input asp-for="Note" class="form-control" />
+                        <span asp-validation-for="Note" class="text-danger"></span>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label asp-for="SellingPrice" class="control-label"></label>
+
+                        <input asp-for="SellingPrice" class="form-control" />
+                        <span asp-validation-for="SellingPrice" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group d-none" id="PurchaseTotalAmountSection">
+                        <label class="control-label">Purchase Total Amount </label>
+
+                        <input type="number" value=0 required id="PurchaseTotalAmount" class="form-control" />
+                        <span class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group d-none" id="PurchaseRemainingAmountSection">
+                        <label class="control-label">Purchase Remaining Amount </label>
+
+                        <input type="number" value=0 required id="PurchaseRemainingAmount" class="form-control" />
+                        <span class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="PurchasePrice" class="control-label"></label>
+
+                        <input asp-for="PurchasePrice"   required class="form-control" />
+                        <span asp-validation-for="PurchasePrice" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group d-none" id="PurchaseItemTimeSection">
+                        <label asp-for="PurchaseItemTime" class="control-label"></label>
+
+                        <input asp-for="PurchaseItemTime" disabled value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss")"
+                            class="form-control" />
+                        <span asp-validation-for="PurchaseItemTime" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group" id="PurchaseSection">
+                        <label asp-for="PurchaseId" class="control-label"></label>
+                        <select class="form-select" required asp-for="PurchaseId" asp-items="ViewBag.Purchase"
+                            aria-label="Default select example">
+                            <option value="default" selected>Select Purchase Type...</option>
+                        </select>
+                        <span asp-validation-for="PurchaseId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group" id="ProductSection">
+                        <label asp-for="ProductId" class="control-label"></label>
+                        <select class="form-select" required asp-for="ProductId" asp-items="ViewBag.Product"
+                            aria-label="Default select example">
+                            <option selected>Select Product Type...</option>
+                        </select>
+                        <span asp-validation-for="ProductId" class="text-danger"></span>
+                    </div>
+                </form>
+
+                <div class="modal-footer">
+                    <button type="button" id="modalclose" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Close
+                    </button>
+                    <button type="button" id="Addbtn" class="btn btn-primary">Add</button>
+                    <button type="button" class="btn btn-primary" id="warningDelete" data-bs-toggle="modal"
+                        data-bs-target="#Delete">
+                        Delete
+                    </button>
+                    <button type="button" id="Updatebtn" class="btn btn-primary">Update</button>
+                </div>
+
+
+
+            </div>
+
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script>
+
+
+        const table = document.getElementById("VendorTable")
+        const HiddenId = document.getElementById("hiddenId")
+        const Description = document.getElementById("Description")
+        const Warranty = document.getElementById("Warranty")
+        const Note = document.getElementById("Note")
+        const SellingPrice = document.getElementById("SellingPrice")
+        const PurchasePrice = document.getElementById("PurchasePrice")
+        const PurchaseItemTime = document.getElementById("PurchaseItemTime")
+        const PurchaseId = document.getElementById("PurchaseId")
+        const ProductId = document.getElementById("ProductId")
+        const PurchaseTotalAmount = document.getElementById("PurchaseTotalAmount")
+        const PurchaseRemainingAmount = document.getElementById("PurchaseRemainingAmount")
+        //sections
+        const PurchaseTotalAmountSection = document.getElementById("PurchaseTotalAmountSection")
+        const PurchaseRemainingAmountSection = document.getElementById("PurchaseRemainingAmountSection")
+        const PurchaseSection = document.getElementById("PurchaseSection")
+        const ProductSection = document.getElementById("ProductSection")
+        const PurchaseItemTimeSection = document.getElementById("PurchaseItemTimeSection")
+
+        //Getting Buttons
+        const AddModalBtn = document.getElementById("AddModalbtn") //Add modal pop up button
+        const AddBtn = document.getElementById("Addbtn") //Add Product Button
+        const UpdateBtn = document.getElementById("Updatebtn") //Update product button
+        const WarningDeleteBtn = document.getElementById("warningDelete") //Warning delete modal pop up button
+        const ConfirmDeleteBtn = document.getElementById("confirmDelete") //Confirm delete Button
+
+
+        //Close buttons of modal
+        const ModalCloseBtn = document.getElementById("modalclose")
+        const ModalCloseIcon = document.getElementById("btnclose")
+
+
+        //Title of modals
+        const ModalHeader = document.getElementById("modalheader")
+        const DeleteModalHeader = document.getElementById("DeleteModalHeader")
+
+
+
+
+
+
+        //Creating FromData for passing the input field values to controller
+        function getInputValues() {
+            if (HiddenId.value == "") {
+                let form = new FormData()
+                form.append("description", Description.value)
+                form.append("warranty", Warranty.value)
+                form.append("note", Note.value)
+                form.append("sellingPrice", SellingPrice.value)
+
+                form.append("purchasePrice", PurchasePrice.value)
+                form.append("purchaseItemTime", PurchaseItemTime.value)
+                form.append("purchaseId", PurchaseId.value)
+                form.append("productId", ProductId.value)
+                printFormData(form)
+                return form;
+            } else {
+                let form = new FormData()
+                form.append("Id", HiddenId.value)
+                form.append("description", Description.value)
+                form.append("warranty", Warranty.value)
+                form.append("note", Note.value)
+                form.append("sellingPrice", SellingPrice.value)
+
+                form.append("purchasePrice", PurchasePrice.value)
+                form.append("purchaseItemTime", PurchaseItemTime.value)
+                form.append("purchaseId", PurchaseId.value)
+                form.append("productId", ProductId.value)
+                printFormData(form)
+                return form;
+            }
+        }
+
+
+
+        //for showing the specific item values during update
+        async function getEditData(...fields) {
+            visibleMultipleSections(UpdateBtn, WarningDeleteBtn)
+            hideSingleSection(AddBtn)
+            //Dynamically changing the modal title
+            document.getElementById("modalheader").innerText = "Update Modal";
+            disableMultipleFields(PurchasePrice, PurchaseId)
+            //Storing the the specific values on fieldBody object with the help of for loop
+            let fieldBody = {};
+            for (let i = 0; i < fields.length; i++) {
+                fieldBody[i] = fields[i];
+            }
+            console.log(fieldBody)
+        @*  field values and their properties
+            field[0] = id
+            field[1] = description
+            field[2] = warranty
+            field[3] = note
+            field[4] = sellingPrice
+            field[5] = purchasePrice
+            field[6] = purchaseItemTime
+            field[7] = purchaseId
+            field[8] = productId
+            *@
+
+                visibleSingleSection(PurchaseTotalAmount)
+            disableSingleField(PurchaseTotalAmount)
+            getById("GetPurchaseById", fieldBody[7], (obj) => {
+                PurchaseTotalAmount.value = obj.purchaseTotalPrice
+            })
+
+            HiddenId.value = parseInt(fieldBody[0]) //Passing the specific Id on the hidden Id
+            Description.value = fieldBody[1] //Passing the specific Vendor-company-name on the vendorcompanyname input field
+            Warranty.value = fieldBody[2] //Passing the specific vendorname Level on the vendorname input field
+            Note.value = fieldBody[3] //Passing the specific vendoraddress Count on the vendoraddress input field
+            SellingPrice.value = fieldBody[4] //Passing the specific vendorphone on the vendorphone input field
+            PurchasePrice.value = fieldBody[5]
+            PurchaseItemTime.value = fieldBody[6] //Passing the specific Total Amount on the TotalAmount input field
+            PurchaseId.value = fieldBody[7] //Passing the specific Total discount on the TotalDiscount input field
+            ProductId.value = fieldBody[8] //Passing the specific Return Amount on the ReturnAmount input field
+        }
+
+
+
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    ModalCloseBtn.addEventListener("click", () => {
+        hideMultipleSections(PurchaseTotalAmountSection, PurchaseRemainingAmountSection);
+        setDVOnMultipleInput(0, Warranty, Note, SellingPrice);
+        resetSelectList(PurchaseId, ProductId);
+        Description.value = '';
+        PurchasePrice.value = '';
+    });
+
+    ModalCloseIcon.addEventListener("click", () => {
+        Description.value = '';
+        PurchasePrice.value = '';
+        resetSelectList(PurchaseId, ProductId);
+        setDVOnMultipleInput(0, Warranty, Note, SellingPrice);
+        hideMultipleSections(PurchaseTotalAmountSection, PurchaseRemainingAmountSection);
+    });
+
+    AddModalBtn.addEventListener("click", () => {
+        ModalHeader.innerText = "Add Purchase List";
+        hideMultipleSections(UpdateBtn, WarningDeleteBtn);
+        visibleSingleSection(AddBtn);
+        enableMultipleFields(PurchasePrice, PurchaseId);
+        disableSingleField(PurchasePrice);
+    });
+
+    PurchaseId.addEventListener("change", () => {
+        if (PurchaseId.value !== "default") {
+            enableSingleField(PurchasePrice);
+            visibleMultipleSections(PurchaseTotalAmountSection, PurchaseRemainingAmountSection);
+            disableMultipleFields(PurchaseTotalAmount, PurchaseRemainingAmount);
+
+            getById("GetPurchaseById", PurchaseId.value, async (obj) => {
+                let purchaseList = await getData("GetPurchaseLists");
+
+                let filteredPurchaseList = purchaseList.data.filter(item => item.purchaseId === parseInt(PurchaseId.value));
+                let TotalInserted = filteredPurchaseList.reduce((acc, cur) => acc + cur.purchasePrice, 0);
+
+                PurchaseTotalAmount.value = parseInt(obj.purchaseTotalPrice);
+                console.log(TotalInserted);
+                let remainingAmount = parseInt(PurchaseTotalAmount.value) - TotalInserted;
+                console.log(remainingAmount - PurchasePrice.value);
+                PurchaseRemainingAmount.value = parseInt(remainingAmount);
+                PurchasePrice.addEventListener("input", () => {
+                    if (parseInt(PurchasePrice.value) > remainingAmount) {
+                        console.log(PurchasePrice.value)
+                        console.log(remainingAmount)
+                        setDVOnMultipleInput(0, PurchasePrice);
+                    }
+                });
+            });
+        } else {
+            PurchaseTotalAmount.value = 0;
+            hideSingleSection(PurchaseTotalAmountSection);
+            enableSingleField(PurchaseTotalAmount);
+        }
+    });
+
+    WarningDeleteBtn.addEventListener("click", () => {
+        DeleteModalHeader.innerText = "Confirm Delete";
+    });
+
+    UpdateBtn.addEventListener("click", () => {
+        edit("UpdatePurchaseList", getInputValues());
+    });
+
+    ConfirmDeleteBtn.addEventListener("click", () => {
+        Delete("DeletePurchaseList", HiddenId.value);
+    });
+
+    async function validationBeforeAddingPurchaseList(TotalAmount) {
+        let PurchaseLists = await getData("GetPurchaseLists");
+        let PurchaseListAmount = 0;
+        console.log(PurchaseLists)
+        PurchaseLists.data.forEach(x => {
+            PurchaseListAmount += parseInt(x.purchasePrice);
+        });
+        let remainAmount = TotalAmount - PurchaseListAmount;
+        console.log(remainAmount);
+        if (remainAmount >= getInputValues().get("purchasePrice")) {
+            AddData("AddPurchaseList", getInputValues());
+        } else {
+            alert("Purchase Amount Exceeding, Recheck your product purchase price");
+            PurchasePrice.value = 0;
+        }
+    }
+
+    AddBtn.addEventListener("click", async () => {
+        getInputValues();
+        if (getInputValues().get("purchaseId") == "default") {
+            alert("Select a purchase log");
+            resetSelectList(PurchaseId);
+        } else {
+            getById("GetPurchaseById", getInputValues().get("purchaseId"), (obj) => {
+                validationBeforeAddingPurchaseList(obj.purchaseTotalPrice);
+            });
+        }
+    });
+
+    var dataTable = new DataTable(table, {
+        responsive: true,
+        ajax: {
+            url: "GetPurchaseLists",
+            type: "POST",
+            dataType: "json"
+        },
+        columns: [
+            { data: "id", name: "Id", autoWidth: true },
+            { data: "description", name: "Description", autoWidth: true },
+            { data: "warranty", name: "Warranty", autoWidth: true },
+            { data: "note", name: "Note", autoWidth: true },
+            { data: "sellingPrice", name: "SellingPrice", autoWidth: true },
+            { data: "purchasePrice", name: "PurchasePrice", autoWidth: true },
+            { data: "purchaseItemTime", name: "PurchaseItemTime", autoWidth: true },
+            { data: "purchaseId", name: "PurchaseId", autoWidth: true },
+            { data: "productId", name: "ProductId", autoWidth: true },
+            {
+                data: "id", name: "Manage", autoWidth: true,
+                render: function (data, type, row, meta) {
+                    return `<button type='button'onclick="getEditData('${dataTable.row(meta.row).data().id}','${dataTable.row(meta.row).data().description}','${dataTable.row(meta.row).data().warranty}','${dataTable.row(meta.row).data().note}','${dataTable.row(meta.row).data().sellingPrice}','${dataTable.row(meta.row).data().purchasePrice}','${dataTable.row(meta.row).data().purchaseItemTime}','${dataTable.row(meta.row).data().purchaseId}','${dataTable.row(meta.row).data().productId}')" class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#Modal'>Edit</button>`;
+                }
+            },
+        ]
+    });
+
+});
+
+    </script>
+}

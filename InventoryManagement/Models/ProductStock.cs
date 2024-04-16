@@ -17,6 +17,8 @@ public partial class ProductStock
     public int? SellingListId { get; set; }
     public int PurchaseListId { get; set; }
     public bool IsSold { get; set; }
+    public bool IsDamage { get; set; }
+    public DateTime InsertDate { get; set; }
     public virtual Product Product { get; set; }
     public virtual SellingList SellingList { get; set; }
     public virtual PurchaseList PurchaseList { get; set; }

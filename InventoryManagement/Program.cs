@@ -20,6 +20,16 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllerRoute(
+    name: "purchase",
+    pattern: "purchase",
+    defaults: new { controller = "purchase", action = "Managepurchase" }
+);
+app.MapControllerRoute(
+    name: "vendor",
+    pattern: "vendor",
+    defaults: new { controller = "Vendor", action = "ManageVendor" }
+);
+app.MapControllerRoute(
     name: "product",
     pattern: "product",
     defaults: new { controller = "Product", action = "ManageProduct" }

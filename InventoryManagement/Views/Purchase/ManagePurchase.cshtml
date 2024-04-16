@@ -1,0 +1,432 @@
+@model InventoryManagement.Models.Purchase
+
+@{
+    ViewData["Title"] = "Purchase";
+}
+<h1>Manage Purchase</h1>
+<p>
+    <button type='button' id="AddModalbtn" class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#Modal'>
+        Add
+        Purchase
+    </button>
+</p>
+
+<table class="table table-striped nowrap" style="width:100%" id="PurchaseTable">
+    <thead>
+        <tr>
+
+            <th>Id</th>
+            <th>VendorCompany</th>
+            <th>PurchaseSn</th>
+            <th>PurchaseTotalPrice</th>
+            <th>PurchaseDiscountAmount</th>
+            <th>PurchaseDiscountPercentage</th>
+            <th>PurchasePaidAmount</th>
+            <th>PurchaseReturnAmount</th>
+            <th>PurchaseDueAmount</th>
+            <th>PurchasePaymentStatus</th>
+            <th>MemoNumber</th>
+            <th>PurchaseDate</th>
+            <th>UpdateAt</th>
+            <th>Manage</th>
+        </tr>
+    </thead>
+</table>
+<!-- Confirm Delete -->
+<div class="modal fade" id="Delete" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" id="DeleteModalHeader">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" id="confirmDelete" class="btn btn-primary">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Edit/Add Modal -->
+<div class="modal fade" id="Modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="modalheader">Modal title</h1>
+                <button type="button" id="btnclose" class="btn-close" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" id="hiddenId" asp-for="Id">
+
+                    <div class="form-group">
+                        <label asp-for="VendorId" class="control-label"></label>
+                        <select class="form-select" required asp-for="VendorId" asp-items="ViewBag.VendorCompany"
+                            aria-label="Default select example">
+                            <option selected>Select Vendor Type...</option>
+                        </select>
+                        <span asp-validation-for="VendorId" class="text-danger"></span>
+                    </div>
+
+
+                    <div class="form-group d-none" id="PurchaseSnSection">
+                        <label asp-for="PurchaseSn" class="control-label"></label>
+                        <input asp-for="PurchaseSn" required class="form-control" />
+                        <span asp-validation-for="PurchaseSn" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="PurchaseTotalPrice" class="control-label"></label>
+
+                        <input asp-for="PurchaseTotalPrice" required value=0 class="form-control" />
+                        <span asp-validation-for="PurchaseTotalPrice" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group" id="PurchaseDiscountSection">
+                        <label asp-for="PurchaseDiscountAmount" class="control-label"></label>
+
+                        <input asp-for="PurchaseDiscountAmount" disabled value=0 class="form-control" />
+                        <span asp-validation-for="PurchaseDiscountAmount" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="PurchaseDiscountPercentage" class="control-label"></label>
+
+                        <input asp-for="PurchaseDiscountPercentage" required value=0 class="form-control" />
+                        <span asp-validation-for="PurchaseDiscountPercentage" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="PurchasePaidAmount" class="control-label"></label>
+
+                        <input asp-for="PurchasePaidAmount" type="number" value=0 class="form-control" />
+                        <span asp-validation-for="PurchasePaidAmount" class="text-danger"></span>
+                    </div>
+                    <div class="form-group d-none" id="PayMoreSection">
+                        <label for="PayMore" class="control-label"> PayMore </label>
+                        <input name="PayMore" type="number" value=0 class="form-control" id="PayMore" />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="PurchaseReturnAmount" class="control-label"></label>
+                        <input asp-for="PurchaseReturnAmount" type="number" value=0 class="form-control" />
+                        <span asp-validation-for="PurchaseReturnAmount" class="text-danger"></span>
+                    </div>
+                    <div class="form-group" id="PurchaseDueSection">
+                        <label asp-for="PurchaseDueAmount" class="control-label"></label>
+                        <input asp-for="PurchaseDueAmount" disabled type="number" value=0 class="form-control" />
+                        <span asp-validation-for="PurchaseDueAmount" class="text-danger"></span>
+                    </div>
+                    <div class="form-group d-none" id="PurchasePaymentStatusSection">
+                        <label asp-for="PurchasePaymentStatus" class="control-label"></label>
+                        <input asp-for="PurchasePaymentStatus" class="form-control" disabled />
+                        <span asp-validation-for="PurchasePaymentStatus" class="text-danger"></span>
+                    </div>
+                    <div class="form-group d-none" id="MemoSection">
+                        <label asp-for="MemoNumber" class="control-label"></label>
+                        <input asp-for="MemoNumber" class="form-control" />
+                        <span asp-validation-for="MemoNumber" id="DueId" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group d-none">
+                        <label asp-for="PurchaseDate" class="control-label"></label>
+                        <input asp-for="PurchaseDate" disabled value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss")"
+                            class="form-control" />
+                        <span asp-validation-for="PurchaseDate" class="text-danger"></span>
+
+                    </div>
+                    <div class="form-group d-none" id="UpdateAtSection">
+                        <label asp-for="UpdateAt" class="control-label"></label>
+                        <input asp-for="UpdateAt" value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss")"
+                            class="form-control" />
+                        <span asp-validation-for="UpdateAt" class="text-danger"></span>
+
+                    </div>
+                </form>
+
+                <div class="modal-footer">
+                    <button type="button" id="modalclose" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Close
+                    </button>
+                    <button type="button" id="Addbtn" class="btn btn-primary">Add</button>
+                    <button type="button" class="btn btn-primary" id="warningDelete" data-bs-toggle="modal"
+                        data-bs-target="#Delete">
+                        Delete
+                    </button>
+                    <button type="button" id="Updatebtn" class="btn btn-primary">Update</button>
+                </div>
+
+
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+
+        const table = document.getElementById("PurchaseTable")
+        const HiddenId = document.getElementById("hiddenId")
+        const VendorCompanyName = document.getElementById("VendorId")
+        const PurchaseSn = document.getElementById("PurchaseSn")
+        const PurchaseTotalPrice = document.getElementById("PurchaseTotalPrice")
+        const PurchaseDiscountAmount = document.getElementById("PurchaseDiscountAmount")
+        const PurchaseDiscountPercentage = document.getElementById("PurchaseDiscountPercentage")
+        const PurchasePaidAmount = document.getElementById("PurchasePaidAmount")
+        const PayMore = document.getElementById("PayMore")
+        const PurchaseReturnAmount = document.getElementById("PurchaseReturnAmount")
+        const PurchaseDueAmount = document.getElementById("PurchaseDueAmount")
+        const PurchasePaymentStatus = document.getElementById("PurchasePaymentStatus")
+        const MemoNumber = document.getElementById("MemoNumber")
+        const PurchaseDate = document.getElementById("PurchaseDate")
+        const UpdateAt = document.getElementById("UpdateAt")
+
+        //Sections
+        
+            const PurchaseSnSection = document.getElementById("PurchaseSnSection")
+            const PurchasePaymentStatusSection = document.getElementById("PurchasePaymentStatusSection")
+            const PurchaseDiscountSection = document.getElementById("PurchaseDiscountSection")
+            const PayMoreSection = document.getElementById("PayMoreSection")
+            const PurchaseDueSection = document.getElementById("PurchaseDueSection")
+            const PurchasePayMoreSection = document.getElementById("PayMoreSection")
+            const MemoSection = document.getElementById("MemoSection")
+        //Getting Buttons
+        const AddModalBtn = document.getElementById("AddModalbtn") //Add modal pop up button
+        const AddBtn = document.getElementById("Addbtn") //Add Product Button
+        const UpdateBtn = document.getElementById("Updatebtn") //Update product button
+        const WarningDeleteBtn = document.getElementById("warningDelete") //Warning delete modal pop up button
+        const ConfirmDeleteBtn = document.getElementById("confirmDelete") //Confirm delete Button
+
+        //Close buttons of modal
+        const ModalCloseBtn = document.getElementById("modalclose")
+        const ModalCloseIcon = document.getElementById("btnclose")
+
+
+
+        //Title of modals
+        const ModalHeader = document.getElementById("modalheader")
+        const DeleteModalHeader = document.getElementById("DeleteModalHeader")
+
+
+PurchaseDiscountPercentage.addEventListener("input", () => {
+    // Retrieve values from input fields and convert them to numbers
+    const totalPrice = parseInt(PurchaseTotalPrice.value);
+    const discountPercentage = parseInt(PurchaseDiscountPercentage.value);
+
+    // Check if both values are valid numbers
+    if (!isNaN(totalPrice) && !isNaN(discountPercentage)) {
+        // Calculate discount amount and update the PurchaseDiscountAmount input field
+        PurchaseDiscountAmount.value = (totalPrice - (totalPrice * (discountPercentage / 100))).toString();
+    }
+    if(PurchaseDiscountAmount.value < 0 ){
+        alert("DiscountAmout cannot be negative")
+        PurchaseDiscountAmount.value = 0
+        PurchaseDiscountPercentage.value = 0
+    }
+});
+
+
+PurchasePaidAmount.addEventListener("input", () => {
+    // Retrieve values from input fields and convert them to numbers
+    const PaidAmount = parseInt(PurchasePaidAmount.value);
+    const DiscountAmount = parseInt(PurchaseDiscountAmount.value);
+    const TotalAmount = parseInt(PurchaseTotalPrice.value);
+    // Check if both values are valid numbers
+    if (!isNaN(PaidAmount) && !isNaN(DiscountAmount)) {
+        if(DiscountAmount > 0){
+        // Calculate discount amount and update the PurchaseDiscountAmount input field
+        PurchaseDueAmount.value = (DiscountAmount - PaidAmount).toString();    
+        }else{
+            PurchaseDueAmount.value = (TotalAmount - PaidAmount).toString();
+        }
+        
+    }
+    if(PurchaseDueAmount.value < 0 ){
+        alert("DueAmount cannot be negative")
+        PurchaseDueAmount.value = 0
+        PurchasePaidAmount.value = 0
+    }
+});
+
+        //for showing the specific item values during update
+        async function getEditData(...fields) {
+
+            disableMultipleFields(VendorCompanyName, PurchaseTotalPrice, PurchaseSn, PurchaseDiscountAmount, PurchaseDiscountPercentage, PurchasePaidAmount, PurchaseDueAmount, MemoNumber)
+
+            visibleMultipleSections(PurchaseSnSection, PurchasePaymentStatusSection,PurchaseDiscountSection,PurchasePayMoreSection, PurchaseDueSection, MemoSection, UpdateBtn, WarningDeleteBtn)
+
+            hideSingleSection(AddBtn)
+
+
+            //Dynamically changing the modal title
+            document.getElementById("modalheader").innerText = "Update Modal";
+            //Storing the the specific values on fieldBody object with the help of for loop
+            let fieldBody = {};
+            for (let i = 0; i < fields.length; i++) {
+                fieldBody[i] = fields[i];
+            }
+            console.log(fieldBody)
+        @*  field values and their properties
+            field[0] = id
+            field[1] = vendorId
+            field[2] = purchaseSn
+            field[3] = purchaseTotalPrice
+            field[4] = purchaseDiscountAmount
+            field[5] = purchaseDiscountPercentage
+            field[6] = purchasePaidAmount
+            field[7] = purchaseReturnAmount
+            field[8] = purchaseDueAmount
+            field[9] = purchasePaymentStatus
+            field[10] = Memo number
+            field[11] = purchaseDate
+            field[11] = UpdateAt
+            *@
+
+                if (fieldBody[8] == 0) {
+                    disableSingleField(PayMore)
+            }
+
+
+            HiddenId.value = parseInt(fieldBody[0]) //Passing the specific Id on the hidden Id
+            VendorCompanyName.value = fieldBody[1] //Passing the specific Vendor-company-name on the vendorcompanyname input field
+            PurchaseSn.value = fieldBody[2] //Passing the specific vendorname Level on the vendorname input field
+            PurchaseTotalPrice.value = fieldBody[3] //Passing the specific vendoraddress Count on the vendoraddress input field
+            PurchaseDiscountAmount.value = fieldBody[4] //Passing the specific vendorphone on the vendorphone input field
+            PurchaseDiscountPercentage.value = fieldBody[5]
+            PurchasePaidAmount.value = fieldBody[6] //Passing the specific Total Amount on the TotalAmount input field
+            PurchaseReturnAmount.value = fieldBody[7] //Passing the specific Total discount on the TotalDiscount input field
+            PurchaseDueAmount.value = fieldBody[8] //Passing the specific Return Amount on the ReturnAmount input field
+            PurchasePaymentStatus.value = fieldBody[9] //Passing the specific Paid on the Paid input field
+            MemoNumber.value = fieldBody[10] //Passing the specific Due on the Due input field
+            PurchaseDate.value = fieldBody[11] //Passing the specific Due on the Due input field
+        }
+
+
+
+        function getInputValues() {
+            if (HiddenId.value == "") {
+                let form = new FormData()
+                form.append("VendorId", VendorCompanyName.value)
+                form.append("PurchaseSn", 0)
+                form.append("PurchaseTotalPrice", PurchaseTotalPrice.value)
+                form.append("PurchaseDiscountAmount", 0)
+
+                form.append("PurchaseDiscountPercentage", PurchaseDiscountPercentage.value)
+                form.append("PurchasePaidAmount", PurchasePaidAmount.value)
+                form.append("PurchaseReturnAmount", PurchaseReturnAmount.value)
+                form.append("PurchaseDueAmount", 0)
+                form.append("PurchasePaymentStatus", PurchasePaymentStatus.value)
+                form.append("MemoNumber", 0)
+                form.append("PurchaseDate", PurchaseDate.value)
+                form.append("UpdateAt", UpdateAt.value)
+                printFormData(form)
+                return form;
+            } else {
+
+                let form = new FormData()
+                form.append("Id", HiddenId.value)
+                form.append("VendorId", VendorCompanyName.value)
+                form.append("PurchaseSn", PurchaseSn.value)
+                form.append("PurchaseTotalPrice", PurchaseTotalPrice.value)
+                form.append("PurchaseDiscountAmount", 0)
+                form.append("PurchaseDiscountPercentage", PurchaseDiscountPercentage.value)
+                form.append("PurchasePaidAmount", document.getElementById("PayMore").value)
+                form.append("PurchaseReturnAmount", PurchaseReturnAmount.value)
+                form.append("PurchaseDueAmount", 0)
+                form.append("PurchasePaymentStatus", PurchasePaymentStatus.value)
+                form.append("MemoNumber", 0)
+                form.append("PurchaseDate", PurchaseDate.value)
+                form.append("UpdateAt", UpdateAt.value)
+                printFormData(form)
+                return form;
+            }
+        }
+
+
+        document.addEventListener("DOMContentLoaded", () => {
+            
+            WarningDeleteBtn.addEventListener("click",()=>{
+                DeleteModalHeader.innerText = "Confirm Delete"
+            })
+
+            ModalCloseBtn.addEventListener("click", () => {
+
+                enableMultipleFields(VendorCompanyName, PurchaseDiscountPercentage, PurchasePaidAmount, PurchaseTotalPrice)
+                hideSingleSection(PurchasePaymentStatusSection)
+
+                resetSelectList(VendorCompanyName)
+                setDVOnMultipleInput(0, PurchaseDiscountAmount, PurchaseDiscountPercentage, PurchaseTotalPrice, PurchasePaidAmount, PurchaseDueAmount)
+            })
+            ModalCloseIcon.addEventListener("click", () => {
+
+                enableMultipleFields(VendorCompanyName, PurchaseDiscountPercentage, PurchasePaidAmount, PurchaseTotalPrice)
+                hideSingleSection(PurchasePaymentStatusSection)
+
+                resetSelectList(VendorCompanyName)
+                setDVOnMultipleInput(0, PurchaseDiscountAmount, PurchaseDiscountPercentage, PurchaseTotalPrice, PurchasePaidAmount, PurchaseDueAmount)
+            })
+
+            AddModalBtn.addEventListener("click", () => {
+                ModalHeader.innerText = "Add Purchase"
+                hideMultipleSections(MemoSection,PurchaseSnSection, UpdateBtn,PayMoreSection)
+
+            })
+
+            ConfirmDeleteBtn.addEventListener("click", () => {
+                Delete("purchase/Deletepurchase", HiddenId.value)
+
+            })
+
+
+            UpdateBtn.addEventListener("click", () => {
+                edit("purchase/UpdatePurchase", getInputValues())
+            })
+
+            AddBtn.addEventListener("click", () => {
+                AddData("purchase/Addpurchase", getInputValues())
+            })
+            var dataTable = new DataTable(table, {
+                responsive: true,
+                ajax: {
+                    url: "purchase/GetPurchase",
+                    type: "POST",
+                    dataType: "json"
+                },
+                columns: [
+                    { data: "id", name: "Id", autoWidth: true },
+                    { data: "vendorId", name: "VendorCompany", autoWidth: true },
+                    { data: "purchaseSn", name: "PurchaseSn", autoWidth: true },
+                    { data: "purchaseTotalPrice", name: "PurchaseTotalPrice", autoWidth: true },
+                    { data: "purchaseDiscountAmount", name: "PurchaseDiscountAmount", autoWidth: true },
+                    { data: "purchaseDiscountPercentage", name: "PurchaseDiscountPercentage", autoWidth: true },
+                    { data: "purchasePaidAmount", name: "PurchasePaidAmount", autoWidth: true },
+                    { data: "purchaseReturnAmount", name: "PurchaseReturnAmount", autoWidth: true },
+                    { data: "purchaseDueAmount", name: "PurchaseDueAmount", autoWidth: true },
+                    { data: "purchasePaymentStatus", name: "PurchasePaymentStatus", autoWidth: true },
+                    { data: "memoNumber", name: "MemoNumber", autoWidth: true },
+                    { data: "purchaseDate", name: "PurchaseDate", autoWidth: true },
+                    { data: "updateAt", name: "UpdateAt", autoWidth: true },
+
+                    {  data: "id", name:"Manage", autoWidth: true ,
+                        //Adding an Extra button for Edit/Delete the specific Catalog
+                        render: function (data, type, row, meta) {
+                            return `<button type='button'onclick="getEditData('${dataTable.row(meta.row).data().id}','${dataTable.row(meta.row).data().vendorId}','${dataTable.row(meta.row).data().purchaseSn}','${dataTable.row(meta.row).data().purchaseTotalPrice}','${dataTable.row(meta.row).data().purchaseDiscountAmount}','${dataTable.row(meta.row).data().purchaseDiscountPercentage}','${dataTable.row(meta.row).data().purchasePaidAmount}','${dataTable.row(meta.row).data().purchaseReturnAmount}','${dataTable.row(meta.row).data().purchaseDueAmount}','${dataTable.row(meta.row).data().purchasePaymentStatus}','${dataTable.row(meta.row).data().memoNumber}','${dataTable.row(meta.row).data().purchaseDate}','${dataTable.row(meta.row).data().updateAt}',)" class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#Modal'>
+                                                                                                                    Edit
+                                                                                                                </button>`
+                        },
+                          orderable: false,
+            searchable: false
+                    },
+                ]
+            });
+
+        })
+
+    </script>
+}

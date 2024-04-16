@@ -1,18 +1,38 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\arsns\\Desktop\\Inventory_Management_System-AspNetCoreMvc\\InventoryManagement\\",
+  "WorkspaceRootPath": "D:\\GamesTBD\\Inventory_Management_System-AspNetCoreMvc-main\\Inventory_Management_System-AspNetCoreMvc-main\\InventoryManagement\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{217EBA2B-40A7-4014-A418-AD3931F4B078}|InventoryManagement.csproj|c:\\users\\arsns\\desktop\\inventory_management_system-aspnetcoremvc\\inventorymanagement\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "AbsoluteMoniker": "D:0:0:{217EBA2B-40A7-4014-A418-AD3931F4B078}|InventoryManagement.csproj|d:\\gamestbd\\inventory_management_system-aspnetcoremvc-main\\inventory_management_system-aspnetcoremvc-main\\inventorymanagement\\views\\product\\productstock.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{217EBA2B-40A7-4014-A418-AD3931F4B078}|InventoryManagement.csproj|solutionrelative:views\\product\\productstock.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{217EBA2B-40A7-4014-A418-AD3931F4B078}|InventoryManagement.csproj|d:\\gamestbd\\inventory_management_system-aspnetcoremvc-main\\inventory_management_system-aspnetcoremvc-main\\inventorymanagement\\views\\product\\productcatalogtype.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{217EBA2B-40A7-4014-A418-AD3931F4B078}|InventoryManagement.csproj|solutionrelative:views\\product\\productcatalogtype.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{217EBA2B-40A7-4014-A418-AD3931F4B078}|InventoryManagement.csproj|d:\\gamestbd\\inventory_management_system-aspnetcoremvc-main\\inventory_management_system-aspnetcoremvc-main\\inventorymanagement\\views\\product\\productcatalog.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{217EBA2B-40A7-4014-A418-AD3931F4B078}|InventoryManagement.csproj|solutionrelative:views\\product\\productcatalog.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{217EBA2B-40A7-4014-A418-AD3931F4B078}|InventoryManagement.csproj|d:\\gamestbd\\inventory_management_system-aspnetcoremvc-main\\inventory_management_system-aspnetcoremvc-main\\inventorymanagement\\views\\product\\manageproduct.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{217EBA2B-40A7-4014-A418-AD3931F4B078}|InventoryManagement.csproj|solutionrelative:views\\product\\manageproduct.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{217EBA2B-40A7-4014-A418-AD3931F4B078}|InventoryManagement.csproj|d:\\gamestbd\\inventory_management_system-aspnetcoremvc-main\\inventory_management_system-aspnetcoremvc-main\\inventorymanagement\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{217EBA2B-40A7-4014-A418-AD3931F4B078}|InventoryManagement.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{217EBA2B-40A7-4014-A418-AD3931F4B078}|InventoryManagement.csproj|d:\\gamestbd\\inventory_management_system-aspnetcoremvc-main\\inventory_management_system-aspnetcoremvc-main\\inventorymanagement\\views\\product\\_productstocktablecrud.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{217EBA2B-40A7-4014-A418-AD3931F4B078}|InventoryManagement.csproj|solutionrelative:views\\product\\_productstocktablecrud.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{217EBA2B-40A7-4014-A418-AD3931F4B078}|InventoryManagement.csproj|d:\\gamestbd\\inventory_management_system-aspnetcoremvc-main\\inventory_management_system-aspnetcoremvc-main\\inventorymanagement\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{217EBA2B-40A7-4014-A418-AD3931F4B078}|InventoryManagement.csproj|solutionrelative:views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{217EBA2B-40A7-4014-A418-AD3931F4B078}|InventoryManagement.csproj|c:\\users\\arsns\\desktop\\inventory_management_system-aspnetcoremvc\\inventorymanagement\\views\\dashboard\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "AbsoluteMoniker": "D:0:0:{217EBA2B-40A7-4014-A418-AD3931F4B078}|InventoryManagement.csproj|d:\\gamestbd\\inventory_management_system-aspnetcoremvc-main\\inventory_management_system-aspnetcoremvc-main\\inventorymanagement\\views\\dashboard\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{217EBA2B-40A7-4014-A418-AD3931F4B078}|InventoryManagement.csproj|solutionrelative:views\\dashboard\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{217EBA2B-40A7-4014-A418-AD3931F4B078}|InventoryManagement.csproj|c:\\users\\arsns\\desktop\\inventory_management_system-aspnetcoremvc\\inventorymanagement\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{217EBA2B-40A7-4014-A418-AD3931F4B078}|InventoryManagement.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -22,43 +42,111 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "_Layout.cshtml",
-              "DocumentMoniker": "C:\\Users\\arsns\\Desktop\\Inventory_Management_System-AspNetCoreMvc\\InventoryManagement\\Views\\Shared\\_Layout.cshtml",
-              "RelativeDocumentMoniker": "Views\\Shared\\_Layout.cshtml",
-              "ToolTip": "C:\\Users\\arsns\\Desktop\\Inventory_Management_System-AspNetCoreMvc\\InventoryManagement\\Views\\Shared\\_Layout.cshtml",
-              "RelativeToolTip": "Views\\Shared\\_Layout.cshtml",
-              "ViewState": "AQIAAOoFAAAAAAAAAAA0wPkFAAAPAAAA",
+              "DocumentIndex": 2,
+              "Title": "ProductCatalog.cshtml",
+              "DocumentMoniker": "D:\\GamesTBD\\Inventory_Management_System-AspNetCoreMvc-main\\Inventory_Management_System-AspNetCoreMvc-main\\InventoryManagement\\Views\\Product\\ProductCatalog.cshtml",
+              "RelativeDocumentMoniker": "Views\\Product\\ProductCatalog.cshtml",
+              "ToolTip": "D:\\GamesTBD\\Inventory_Management_System-AspNetCoreMvc-main\\Inventory_Management_System-AspNetCoreMvc-main\\InventoryManagement\\Views\\Product\\ProductCatalog.cshtml",
+              "RelativeToolTip": "Views\\Product\\ProductCatalog.cshtml",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-02-19T02:42:03.464Z"
+              "WhenOpened": "2024-03-25T22:25:49.113Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "Index.cshtml",
-              "DocumentMoniker": "C:\\Users\\arsns\\Desktop\\Inventory_Management_System-AspNetCoreMvc\\InventoryManagement\\Views\\Dashboard\\Index.cshtml",
-              "RelativeDocumentMoniker": "Views\\Dashboard\\Index.cshtml",
-              "ToolTip": "C:\\Users\\arsns\\Desktop\\Inventory_Management_System-AspNetCoreMvc\\InventoryManagement\\Views\\Dashboard\\Index.cshtml",
-              "RelativeToolTip": "Views\\Dashboard\\Index.cshtml",
+              "Title": "ProductCatalogType.cshtml",
+              "DocumentMoniker": "D:\\GamesTBD\\Inventory_Management_System-AspNetCoreMvc-main\\Inventory_Management_System-AspNetCoreMvc-main\\InventoryManagement\\Views\\Product\\ProductCatalogType.cshtml",
+              "RelativeDocumentMoniker": "Views\\Product\\ProductCatalogType.cshtml",
+              "ToolTip": "D:\\GamesTBD\\Inventory_Management_System-AspNetCoreMvc-main\\Inventory_Management_System-AspNetCoreMvc-main\\InventoryManagement\\Views\\Product\\ProductCatalogType.cshtml",
+              "RelativeToolTip": "Views\\Product\\ProductCatalogType.cshtml",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-02-19T02:41:53.793Z"
+              "WhenOpened": "2024-03-25T22:25:42.496Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
+              "Title": "ManageProduct.cshtml",
+              "DocumentMoniker": "D:\\GamesTBD\\Inventory_Management_System-AspNetCoreMvc-main\\Inventory_Management_System-AspNetCoreMvc-main\\InventoryManagement\\Views\\Product\\ManageProduct.cshtml",
+              "RelativeDocumentMoniker": "Views\\Product\\ManageProduct.cshtml",
+              "ToolTip": "D:\\GamesTBD\\Inventory_Management_System-AspNetCoreMvc-main\\Inventory_Management_System-AspNetCoreMvc-main\\InventoryManagement\\Views\\Product\\ManageProduct.cshtml",
+              "RelativeToolTip": "Views\\Product\\ManageProduct.cshtml",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-03-25T22:25:38.885Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "ProductStock.cshtml",
+              "DocumentMoniker": "D:\\GamesTBD\\Inventory_Management_System-AspNetCoreMvc-main\\Inventory_Management_System-AspNetCoreMvc-main\\InventoryManagement\\Views\\Product\\ProductStock.cshtml",
+              "RelativeDocumentMoniker": "Views\\Product\\ProductStock.cshtml",
+              "ToolTip": "D:\\GamesTBD\\Inventory_Management_System-AspNetCoreMvc-main\\Inventory_Management_System-AspNetCoreMvc-main\\InventoryManagement\\Views\\Product\\ProductStock.cshtml",
+              "RelativeToolTip": "Views\\Product\\ProductStock.cshtml",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAcAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-03-25T22:22:38.53Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "_ProductStockTableCrud.cshtml",
+              "DocumentMoniker": "D:\\GamesTBD\\Inventory_Management_System-AspNetCoreMvc-main\\Inventory_Management_System-AspNetCoreMvc-main\\InventoryManagement\\Views\\Product\\_ProductStockTableCrud.cshtml",
+              "RelativeDocumentMoniker": "Views\\Product\\_ProductStockTableCrud.cshtml",
+              "ToolTip": "D:\\GamesTBD\\Inventory_Management_System-AspNetCoreMvc-main\\Inventory_Management_System-AspNetCoreMvc-main\\InventoryManagement\\Views\\Product\\_ProductStockTableCrud.cshtml",
+              "RelativeToolTip": "Views\\Product\\_ProductStockTableCrud.cshtml",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-03-25T22:00:26.76Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "_Layout.cshtml",
+              "DocumentMoniker": "D:\\GamesTBD\\Inventory_Management_System-AspNetCoreMvc-main\\Inventory_Management_System-AspNetCoreMvc-main\\InventoryManagement\\Views\\Shared\\_Layout.cshtml",
+              "RelativeDocumentMoniker": "Views\\Shared\\_Layout.cshtml",
+              "ToolTip": "D:\\GamesTBD\\Inventory_Management_System-AspNetCoreMvc-main\\Inventory_Management_System-AspNetCoreMvc-main\\InventoryManagement\\Views\\Shared\\_Layout.cshtml",
+              "RelativeToolTip": "Views\\Shared\\_Layout.cshtml",
+              "ViewState": "AQIAACsAAAAAAAAAAAAAACsAAAAHAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-02-19T02:42:03.464Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "D:\\GamesTBD\\Inventory_Management_System-AspNetCoreMvc-main\\Inventory_Management_System-AspNetCoreMvc-main\\InventoryManagement\\Views\\Dashboard\\Index.cshtml",
+              "RelativeDocumentMoniker": "Views\\Dashboard\\Index.cshtml",
+              "ToolTip": "D:\\GamesTBD\\Inventory_Management_System-AspNetCoreMvc-main\\Inventory_Management_System-AspNetCoreMvc-main\\InventoryManagement\\Views\\Dashboard\\Index.cshtml",
+              "RelativeToolTip": "Views\\Dashboard\\Index.cshtml",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-02-19T02:41:53.793Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
               "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\arsns\\Desktop\\Inventory_Management_System-AspNetCoreMvc\\InventoryManagement\\Program.cs",
+              "DocumentMoniker": "D:\\GamesTBD\\Inventory_Management_System-AspNetCoreMvc-main\\Inventory_Management_System-AspNetCoreMvc-main\\InventoryManagement\\Program.cs",
               "RelativeDocumentMoniker": "Program.cs",
-              "ToolTip": "C:\\Users\\arsns\\Desktop\\Inventory_Management_System-AspNetCoreMvc\\InventoryManagement\\Program.cs",
+              "ToolTip": "D:\\GamesTBD\\Inventory_Management_System-AspNetCoreMvc-main\\Inventory_Management_System-AspNetCoreMvc-main\\InventoryManagement\\Program.cs",
               "RelativeToolTip": "Program.cs",
-              "ViewState": "AQIAABsAAAAAAAAAAAAAABgAAAAjAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABkAAAACAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-02-19T02:40:51.583Z"
+              "WhenOpened": "2024-02-19T02:40:51.583Z",
+              "EditorCaption": ""
             }
           ]
         }

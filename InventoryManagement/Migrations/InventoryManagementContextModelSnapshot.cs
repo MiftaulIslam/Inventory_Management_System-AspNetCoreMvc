@@ -17,7 +17,7 @@ namespace InventoryManagement.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.2")
+                .HasAnnotation("ProductVersion", "8.0.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -679,7 +679,7 @@ namespace InventoryManagement.Migrations
                     b.HasIndex("ProductStockId")
                         .IsUnique();
 
-                    b.ToTable("ProductDamaged");
+                    b.ToTable("ProductDamageds");
                 });
 
             modelBuilder.Entity("InventoryManagement.Models.ProductLog", b =>
@@ -689,9 +689,6 @@ namespace InventoryManagement.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("ActivityByRegistrationId")
-                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedOnUtc")
                         .HasColumnType("datetime2");
@@ -709,7 +706,7 @@ namespace InventoryManagement.Migrations
                     b.Property<int?>("PurchaseId")
                         .HasColumnType("int");
 
-                    b.Property<int>("RegistrationId")
+                    b.Property<int?>("RegistrationId")
                         .HasColumnType("int");
 
                     b.Property<int?>("SellingId")
@@ -725,7 +722,7 @@ namespace InventoryManagement.Migrations
 
                     b.HasIndex("SellingId");
 
-                    b.ToTable("ProductLog");
+                    b.ToTable("ProductLogs");
                 });
 
             modelBuilder.Entity("InventoryManagement.Models.ProductStock", b =>
@@ -735,6 +732,12 @@ namespace InventoryManagement.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("InsertDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDamage")
+                        .HasColumnType("bit");
 
                     b.Property<bool>("IsSold")
                         .HasColumnType("bit");
@@ -760,7 +763,7 @@ namespace InventoryManagement.Migrations
 
                     b.HasIndex("SellingListId");
 
-                    b.ToTable("ProductStock");
+                    b.ToTable("ProductStocks");
                 });
 
             modelBuilder.Entity("InventoryManagement.Models.Purchase", b =>
@@ -770,9 +773,6 @@ namespace InventoryManagement.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("InsertDate")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("MemoNumber")
                         .IsRequired()
@@ -806,8 +806,11 @@ namespace InventoryManagement.Migrations
                     b.Property<decimal>("PurchaseTotalPrice")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("RegistrationId")
+                    b.Property<int?>("RegistrationId")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdateAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("VendorId")
                         .HasColumnType("int");
@@ -818,7 +821,7 @@ namespace InventoryManagement.Migrations
 
                     b.HasIndex("VendorId");
 
-                    b.ToTable("Purchase");
+                    b.ToTable("Purchases");
                 });
 
             modelBuilder.Entity("InventoryManagement.Models.PurchaseList", b =>
@@ -843,6 +846,9 @@ namespace InventoryManagement.Migrations
                     b.Property<int>("PurchaseId")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("PurchaseItemTime")
+                        .HasColumnType("datetime2");
+
                     b.Property<decimal>("PurchasePrice")
                         .HasColumnType("decimal(18,2)");
 
@@ -859,7 +865,7 @@ namespace InventoryManagement.Migrations
 
                     b.HasIndex("PurchaseId");
 
-                    b.ToTable("PurchaseList");
+                    b.ToTable("PurchaseLists");
                 });
 
             modelBuilder.Entity("InventoryManagement.Models.PurchasePayment", b =>
@@ -972,7 +978,7 @@ namespace InventoryManagement.Migrations
 
                     b.HasIndex("RegistrationId");
 
-                    b.ToTable("PurchasePaymentReturnRecord");
+                    b.ToTable("PurchasePaymentReturnRecords");
                 });
 
             modelBuilder.Entity("InventoryManagement.Models.Registration", b =>
@@ -1593,10 +1599,6 @@ namespace InventoryManagement.Migrations
                     b.Property<decimal>("Paid")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<byte[]>("Photo")
-                        .IsRequired()
-                        .HasColumnType("varbinary(max)");
-
                     b.Property<decimal>("ReturnAmount")
                         .HasColumnType("decimal(18,2)");
 
@@ -1622,9 +1624,13 @@ namespace InventoryManagement.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<byte[]>("VendorPhoto")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
                     b.HasKey("Id");
 
-                    b.ToTable("Vendor");
+                    b.ToTable("Vendors");
                 });
 
             modelBuilder.Entity("InventoryManagement.Models.Warranty", b =>
@@ -1881,11 +1887,9 @@ namespace InventoryManagement.Migrations
                         .WithMany("ProductLog")
                         .HasForeignKey("PurchaseId");
 
-                    b.HasOne("InventoryManagement.Models.Registration", "Registration")
+                    b.HasOne("InventoryManagement.Models.Registration", null)
                         .WithMany("ProductLog")
-                        .HasForeignKey("RegistrationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("RegistrationId");
 
                     b.HasOne("InventoryManagement.Models.Selling", "Selling")
                         .WithMany("ProductLog")
@@ -1894,8 +1898,6 @@ namespace InventoryManagement.Migrations
                     b.Navigation("ProductStock");
 
                     b.Navigation("Purchase");
-
-                    b.Navigation("Registration");
 
                     b.Navigation("Selling");
                 });
@@ -1927,19 +1929,15 @@ namespace InventoryManagement.Migrations
 
             modelBuilder.Entity("InventoryManagement.Models.Purchase", b =>
                 {
-                    b.HasOne("InventoryManagement.Models.Registration", "Registration")
+                    b.HasOne("InventoryManagement.Models.Registration", null)
                         .WithMany("Purchase")
-                        .HasForeignKey("RegistrationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("RegistrationId");
 
                     b.HasOne("InventoryManagement.Models.Vendor", "Vendor")
                         .WithMany("Purchase")
                         .HasForeignKey("VendorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Registration");
 
                     b.Navigation("Vendor");
                 });

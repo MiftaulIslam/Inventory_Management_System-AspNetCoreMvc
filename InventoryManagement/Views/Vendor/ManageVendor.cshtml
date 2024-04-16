@@ -1,0 +1,401 @@
+@model InventoryManagement.Models.Vendor
+
+@{
+    ViewData["Title"] = "Vendor";
+}
+<h1>Manage Vendor</h1>
+<p>
+    <button type='button' id="AddModalbtn" class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#Modal'>
+        Add
+        Vendor
+    </button>
+</p>
+
+<table class="table table-striped nowrap" style="width:100%" id="VendorTable">
+    <thead>
+        <tr>
+
+            <th>Id</th>
+            <th>VendorCN</th>
+            <th>VendorName</th>
+            <th>VendorImage</th>
+            <th>VendorAddress</th>
+            <th>VendorPhone</th>
+            <th>Description</th>
+            <th>TotalAmount</th>
+            <th>TotalDiscount</th>
+            <th>ReturnAmount</th>
+            <th>Paid</th>
+            <th>Due</th>
+            <th>Manage</th>
+        </tr>
+    </thead>
+</table>
+
+
+<!-- Confirm Delete -->
+<div class="modal fade" id="Delete" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" id="DeleteModalHeader">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" id="confirmDelete" class="btn btn-primary">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Edit/Add Modal -->
+<div class="modal fade" id="Modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="modalheader">Modal title</h1>
+                <button type="button" id="btnclose" class="btn-close" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" id="hiddenId" asp-for="Id">
+
+                    <div class="form-group">
+                        <label asp-for="VendorCompanyName" class="control-label"></label>
+                        <input asp-for="VendorCompanyName" required class="form-control" />
+                        <span asp-validation-for="VendorCompanyName" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="VendorName" class="control-label"></label>
+                        <input asp-for="VendorName" required class="form-control" />
+                        <span asp-validation-for="VendorName" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="VendorAddress" class="control-label"></label>
+
+                        <input asp-for="VendorAddress" required class="form-control" />
+                        <span asp-validation-for="VendorAddress" class="text-danger"></span>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label asp-for="VendorPhone" class="control-label"></label>
+
+                        <input asp-for="VendorPhone" required class="form-control" />
+                        <span asp-validation-for="VendorPhone" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Description" class="control-label"></label>
+
+                        <input asp-for="Description" required class="form-control" />
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group" id="TotalAmountSection">
+                        <label asp-for="TotalAmount" class="control-label"></label>
+
+                        <input asp-for="TotalAmount" type="number" disabled value=0 class="form-control" />
+                        <span asp-validation-for="TotalAmount" class="text-danger"></span>
+                    </div>
+                    <div class="form-group" id="TotalDiscountSection">
+                        <label asp-for="TotalDiscount" class="control-label"></label>
+                        <input asp-for="TotalDiscount" type="number" disabled value=0 class="form-control" />
+                        <span asp-validation-for="TotalDiscount" class="text-danger"></span>
+                    </div>
+                    <div class="form-group" id="ReturnSection">
+                        <label asp-for="ReturnAmount" class="control-label"></label>
+                        <input asp-for="ReturnAmount" type="number" disabled value=0 class="form-control" />
+                        <span asp-validation-for="ReturnAmount" class="text-danger"></span>
+                    </div>
+                    <div class="form-group" id="PaidSection">
+                        <label asp-for="Paid" class="control-label"></label>
+                        <input asp-for="Paid" type="number" disabled value=0 class="form-control" />
+                        <span asp-validation-for="Paid" class="text-danger"></span>
+                    </div>
+                    <div class="form-group" id="DueSection">
+                        <label asp-for="Due" class="control-label"></label>
+                        <input asp-for="Due" type="number" disabled value=0 class="form-control" />
+                        <span asp-validation-for="Due" id="DueId" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="VendorPhoto" class="control-label"></label>
+                        <input type="file" name="Photo" id="VendorPhoto" class="form-control" />
+                        <img src="~/dist/img/no-image-icon-15.png" id="previewImage" style="width:100px;height:100px;"
+                            alt="">
+                        <span asp-validation-for="VendorPhoto" class="text-danger"></span>
+                        <p id="ProductImageString"></p>
+                    </div>
+                </form>
+
+                <div class="modal-footer">
+                    <button type="button" id="modalclose" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Close
+                    </button>
+                    <button type="button" id="Addbtn" class="btn btn-primary">Add</button>
+                    <button type="button" class="btn btn-primary" id="warningDelete" data-bs-toggle="modal"
+                        data-bs-target="#Delete">
+                        Delete
+                    </button>
+                    <button type="button" id="Updatebtn" class="btn btn-primary">Update</button>
+                </div>
+
+
+
+            </div>
+
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script>
+
+
+
+
+
+
+        const table = document.getElementById("VendorTable")
+        const HiddenId = document.getElementById("hiddenId")
+        const VendorCompanyName = document.getElementById("VendorCompanyName")
+        const VendorName = document.getElementById("VendorName")
+        const VendorAddress = document.getElementById("VendorAddress")
+        const VendorPhone = document.getElementById("VendorPhone")
+        const Description = document.getElementById("Description")
+        const TotalAmount = document.getElementById("TotalAmount")
+        const TotalDiscount = document.getElementById("TotalDiscount")
+        const ReturnAmount = document.getElementById("ReturnAmount")
+        const Paid = document.getElementById("Paid")
+        const Due = document.getElementById("Due")
+        const Photo = document.getElementById("VendorPhoto")
+        //sections
+        const TotalAmountSection = document.getElementById("TotalAmountSection")
+        const TotalDiscountSection = document.getElementById("TotalDiscountSection")
+        const ReturnSection = document.getElementById("ReturnSection")
+        const PaidSection = document.getElementById("PaidSection")
+        const DueSection = document.getElementById("DueSection")
+
+        //Getting Buttons
+        const AddModalBtn = document.getElementById("AddModalbtn") //Add modal pop up button
+        const AddBtn = document.getElementById("Addbtn") //Add Product Button
+        const UpdateBtn = document.getElementById("Updatebtn") //Update product button
+        const WarningDeleteBtn = document.getElementById("warningDelete") //Warning delete modal pop up button
+        const ConfirmDeleteBtn = document.getElementById("confirmDelete") //Confirm delete Button
+
+
+        //Close buttons of modal
+        const ModalCloseBtn = document.getElementById("modalclose")
+        const ModalCloseIcon = document.getElementById("btnclose")
+
+
+        //Title of modals
+        const ModalHeader = document.getElementById("modalheader")
+        const DeleteModalHeader = document.getElementById("DeleteModalHeader")
+
+        //Creating FromData for passing the input field values to controller
+        function getInputValues() {
+            if (HiddenId.value == "") {
+                let form = new FormData()
+                form.append("VendorCompanyName", VendorCompanyName.value)
+                form.append("VendorName", VendorName.value)
+                form.append("VendorAddress", VendorAddress.value)
+                form.append("VendorPhone", VendorPhone.value)
+
+                form.append("Photo", Photo.files[0])
+                form.append("VendorPhoto", "Greeting")
+                form.append("Description", Description.value)
+                form.append("TotalAmount", TotalAmount.value)
+                form.append("TotalDiscount", TotalDiscount.value)
+                form.append("ReturnAmount", ReturnAmount.value)
+                form.append("Paid", Paid.value)
+                form.append("Due", Due.value)
+                printFormData(form)
+                return form;
+            } else {
+
+                let vendorImageBaseUrl = document.getElementById("previewImage").src
+                // Find the index of the comma
+                const commaIndex = vendorImageBaseUrl.indexOf(',');
+
+                // Extract the base64 string
+                const base64String = vendorImageBaseUrl.substring(commaIndex + 1);
+
+                let form = new FormData()
+                form.append("Id", HiddenId.value)
+                form.append("VendorCompanyName", VendorCompanyName.value)
+                form.append("VendorName", VendorName.value)
+                form.append("VendorAddress", VendorAddress.value)
+                form.append("VendorPhone", VendorPhone.value)
+                form.append("Photo", Photo.files[0])
+                form.append("VendorPhoto", base64String)
+                form.append("Description", Description.value)
+                form.append("TotalAmount", TotalAmount.value)
+                form.append("TotalDiscount", TotalDiscount.value)
+                form.append("ReturnAmount", ReturnAmount.value)
+                form.append("Paid", Paid.value)
+                form.append("Due", Due.value)
+                printFormData(form)
+                return form;
+            }
+        }
+
+        //Event: If someone upload an image
+        Photo.addEventListener('change', function () {
+            //Getting the file
+            const file = this.files[0];
+            const allowExtensions = ["jpg", "jpeg", "png"]
+            //If the file is exists then show the file on preview Image section, else show something else(adding later)
+            if (file) {
+                const extension = file.name.split('.').pop().toLowerCase()
+                if (allowExtensions.includes(extension)) {
+
+                    const reader = new FileReader();
+                    reader.onload = function () {
+                        previewImage.src = reader.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+                else {
+                    this.value = ""
+                    alert("Please upload a valid image")
+                }
+            }
+        });
+        //for showing the specific item values during update
+        async function getEditData(...fields) {
+            visibleMultipleSections(TotalAmountSection,ReturnSection, TotalDiscountSection, PaidSection, DueSection, UpdateBtn, WarningDeleteBtn)
+            hideSingleSection(AddBtn)
+            //Dynamically changing the modal title
+            document.getElementById("modalheader").innerText = "Update Modal";
+
+            //Storing the the specific values on fieldBody object with the help of for loop
+            let fieldBody = {};
+            for (let i = 0; i < fields.length; i++) {
+                fieldBody[i] = fields[i];
+            }
+            console.log(fieldBody)
+        @*  field values and their properties
+            field[0] = id
+            field[1] = vendorcompanyname
+            field[2] = vendorname
+            field[3] = vendoraddress
+            field[4] = vendorphone
+            field[5] = photo
+            field[6] = description
+            field[7] = total amount
+            field[8] = total discount
+            field[9] = return amount
+            field[10] = paid
+            field[11] = due
+            *@
+
+
+                HiddenId.value = parseInt(fieldBody[0]) //Passing the specific Id on the hidden Id
+            VendorCompanyName.value = fieldBody[1] //Passing the specific Vendor-company-name on the vendorcompanyname input field
+            VendorName.value = fieldBody[2] //Passing the specific vendorname Level on the vendorname input field
+            VendorAddress.value = fieldBody[3] //Passing the specific vendoraddress Count on the vendoraddress input field
+            VendorPhone.value = fieldBody[4] //Passing the specific vendorphone on the vendorphone input field
+            document.getElementById("previewImage").src = `data:image/jpeg;base64,${fieldBody[5]}`
+            Description.value = fieldBody[6]
+            TotalAmount.value = fieldBody[7] //Passing the specific Total Amount on the TotalAmount input field
+            TotalDiscount.value = fieldBody[8] //Passing the specific Total discount on the TotalDiscount input field
+            ReturnAmount.value = fieldBody[9] //Passing the specific Return Amount on the ReturnAmount input field
+            Paid.value = fieldBody[10] //Passing the specific Paid on the Paid input field
+            Due.value = fieldBody[11] //Passing the specific Due on the Due input field
+        }
+
+
+
+        document.addEventListener("DOMContentLoaded", () => {
+
+            ModalCloseBtn.addEventListener("click", () => {
+
+                hideMultipleSections(TotalAmountSection, TotalDiscountSection, PaidSection, DueSection)
+                document.getElementById("previewImage").src = "/dist/img/no-image-icon-15.png"
+                removeField(HiddenId, VendorCompanyName, VendorName, VendorAddress, VendorPhone, Description, Photo)
+                setDVOnMultipleInput(0, TotalAmount, TotalDiscount, ReturnAmount, Paid, Due)
+
+
+            })
+            ModalCloseIcon.addEventListener("click", () => {
+
+                document.getElementById("previewImage").src = "/dist/img/no-image-icon-15.png"
+                removeField(HiddenId, VendorCompanyName, VendorName, VendorAddress, VendorPhone, Description, Photo)
+                setDVOnMultipleInput(0, TotalAmount, TotalDiscount, ReturnAmount, Paid, Due)
+            })
+            AddModalBtn.addEventListener("click", () => {
+                
+                hideMultipleSections(TotalAmountSection, TotalDiscountSection, PaidSection, DueSection, ReturnSection)
+                hideSingleSection(UpdateBtn)
+                ModalHeader.innerText = "Add Vendor"
+            })
+
+            WarningDeleteBtn.addEventListener("click", () => {
+                DeleteModalHeader.innerText = "Confirm Delete"
+            })
+            UpdateBtn.addEventListener("click", () => {
+                edit("vendor/UpdateVendor", getInputValues())
+            })
+
+
+            ConfirmDeleteBtn.addEventListener("click", () => {
+                Delete("vendor/DeleteVendor", HiddenId.value)
+            })
+
+            AddBtn.addEventListener("click", () => {
+                AddData("vendor/AddVendor", getInputValues())
+            })
+            var dataTable = new DataTable(table, {responsive:true,
+                ajax: {
+                    url: "Vendor/GetVendors",
+                    type: "POST",
+                    dataType: "json"
+                },
+                columns: [
+                    { data: "id", name: "Id", autoWidth: true },
+                    { data: "vendorCompanyName", name: "VendorCN", autoWidth: true },
+                    { data: "vendorName", name: "VendorName", autoWidth: true },
+                    {
+                        data: "vendorPhoto",
+                        name: "VendorImage",
+                        autoWidth: true,
+                        render: function (data, type, row) {
+                            if (data != null) {
+                                return '<img src="data:image/jpeg;base64,' + data + '" style="width:100px;height:100px;"/>';
+                            }
+                            return `<img src="/dist/img/no-image-icon-15.png" style="width:100px;height:100px;"
+                                    alt="">`;
+                        }
+                    },
+                    { data: "vendorAddress", name: "VendorAddress", autoWidth: true },
+                    { data: "vendorPhone", name: "VendorPhone", autoWidth: true },
+                    { data: "description", name: "Description", autoWidth: true },
+                    { data: "totalAmount", name: "TotalAmount", autoWidth: true },
+                    { data: "totalDiscount", name: "TotalDiscount", autoWidth: true },
+                    { data: "returnAmount", name: "ReturnAmount", autoWidth: true },
+                    { data: "paid", name: "Paid", autoWidth: true },
+                    { data: "due", name: "Due", autoWidth: true },
+
+                    {data: "id", name: "Manage", autoWidth: true ,
+                        //Adding an Extra button for Edit/Delete the specific Catalog
+                        render: function (data, type, row, meta) {
+                            return `<button type='button'onclick="getEditData('${dataTable.row(meta.row).data().id}','${dataTable.row(meta.row).data().vendorCompanyName}','${dataTable.row(meta.row).data().vendorName}','${dataTable.row(meta.row).data().vendorAddress}','${dataTable.row(meta.row).data().vendorPhone}','${dataTable.row(meta.row).data().vendorPhoto}','${dataTable.row(meta.row).data().description}','${dataTable.row(meta.row).data().totalAmount}','${dataTable.row(meta.row).data().totalDiscount}','${dataTable.row(meta.row).data().returnAmount}','${dataTable.row(meta.row).data().paid}','${dataTable.row(meta.row).data().due}',)" class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#Modal'>
+                                                                                                            Edit
+                                                                                                        </button>`
+                        }
+                    },
+                ]
+            });
+
+        })
+
+    </script>
+}

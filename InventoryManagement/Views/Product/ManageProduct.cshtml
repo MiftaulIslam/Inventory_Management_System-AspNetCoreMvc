@@ -16,48 +16,17 @@
     <thead>
         <tr>
 
-            <th>
-                Id
-            </th>
-
-            <th>
-                ProductName
-            </th>
-
-            <th>
-                Description
-            </th>
-
-
-            <th>
-                Warranty
-            </th>
-            <th>
-                Note
-            </th>
-
-            <th class="text-center">
-                ProductImage
-            </th>
-
-            <th>
-                ProductCatalogId
-            </th>
-            <th>
-                SellingPrice
-            </th>
-
-            <th>
-                InsertDate
-            </th>
-
-            <th>
-                UpdatedAt
-            </th>
-
-            <th>
-                Manage Product
-            </th>
+            <th>Id</th>
+            <th>ProductName</th>
+            <th>Description</th>
+            <th>Warranty</th>
+            <th>Note</th>
+            <th>ProductImage</th>
+            <th>ProductCatalogId</th>
+            <th>SellingPrice</th>
+            <th>InsertDate</th>
+            <th>UpdatedAt</th>
+            <th>Manage Product</th>
 
         </tr>
     </thead>
@@ -198,6 +167,29 @@
     </div>
 </div>
 
+
+<!--Edit/Add Modal -->
+<div class="modal fade" id="stock" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog"  style="max-width: 1200px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="modalheader">Modal title</h1>
+                <button type="button" id="btnclose" class="btn-close" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="StockBody">
+                <partial name="_ProductStockTableCrud" model=Model />
+                <div class="modal-footer">
+                    <button type="button" id="modalclose" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Close
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
 @section Scripts {
     <script>
         //Getting the input fields
@@ -231,7 +223,7 @@
         const ModalHeader = document.getElementById("modalheader")
         const DeleteModalHeader = document.getElementById("DeleteModalHeader")
 
-     
+
         //Creating FromData for passing the input field values to controller
         function getInputValues() {
             if (HiddenId.value == "") {
@@ -308,7 +300,7 @@
             *@
 
             // Fetching the specific product catalog 
-            let data = await getById("product/getCatalogById", fieldBody[6]);
+            let data = await getByIdAsync("product/getCatalogById", fieldBody[6]);
 
             
             //By default the ProductCatalogType selectlist have no options. The options need to create. But there will be a default option so the length will be 1
@@ -519,18 +511,57 @@
             Image.addEventListener('change', function () {
                 //Getting the file
                 const file = this.files[0];
+                const allowExtensions = ["jpg", "jpeg", "png"]
                 //If the file is exists then show the file on preview Image section, else show something else(adding later)
                 if (file) {
+                    const extension = file.name.split('.').pop().toLowerCase()
+                    if(allowExtensions.includes(extension)){
+
                     const reader = new FileReader();
                     reader.onload = function () {
                         previewImage.src = reader.result;
                     };
                     reader.readAsDataURL(file);
-                    document.getElementById("previewImage").classList.remove("d-none")
+                    }
+                    else{
+                        this.value = ""
+                        alert("Please upload a valid image")
+                    }
                 }
             });
-
             
+            function getStocksData(id){
+                
+        let table = document.getElementById("ProductStockTable");
+
+            var StockdataTable = new DataTable(table, {
+            ajax: {
+                url: `product/GetStocksById?id=${parseInt(id)}`,
+                type: "POST",
+                dataType: "json"
+            },
+            columns: [
+                { data: "id", name: "Id", autoWidth: true },
+                { data: "productCode", name: "ProductCode", autoWidth: true },
+                { data: "productId", name: "Product", autoWidth: true },
+                { data: "sellingListId", name: "SellingListId", autoWidth: true },
+                { data: "purchaseListId", name: "PurchaseListId", autoWidth: true },
+                { data: "isSold", name: "IsSold", autoWidth: true },
+                { data: "isDamage", name: "IsDamage", autoWidth: true },
+                { data: "insertDate", name: "InsertDate", autoWidth: true },
+
+                {
+                    data: "id", name: "Manage", autoWidth: true,
+                    //Adding an Extra button for Edit/Delete the specific Catalog
+                    render: function (data, type, row, meta) {
+                        return `<button type='button' class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#Modal'>Edit</button>`
+                    }
+                },
+            ]
+        });
+
+            }
+          
         document.addEventListener("DOMContentLoaded", () => {
 
            
@@ -579,8 +610,7 @@
             ConfirmDeleteBtn.addEventListener("click", () => {
                 Delete("product/DeleteProduct", HiddenId.value)
             })
-
-            var dtTable = document.getElementById('ProductTable'); //specifing the table
+              var dtTable = document.getElementById('ProductTable'); //specifing the table
             //if the talbe exists then create a jquery data table
             if (dtTable) {
                 var dataTable = new DataTable(dtTable, {
@@ -606,14 +636,28 @@
                                 return '';
                             }
                         },
-                        { data: "productCatalogId", name: "ProductCatalogId", autoWidth: true },
+                        { data: "productCatalogId", name: "ProductCatalogId", autoWidth: true,
+                        render: function(data, type, row){
+                            if(data != null){
+                                let currentRowId = row.id
+                                getById("product/getCatalogById", data, (object)=> {
+                                    document.getElementById(`ProductCatalogNameForId_${currentRowId}`).innerHTML = object.catalogName
+                                })
+                                return `<p id="ProductCatalogNameForId_${currentRowId}"></p>`;
+                            }
+                            return ''
+                        }
+                         },
                         { data: "sellingPrice", name: "SellingPrice", autoWidth: true },
                         { data: "insertDate", name: "InsertDate", autoWidth: true },
                         { data: "updatedAt", name: "UpdatedAt", autoWidth: true },
                         {
                             //Adding an Extra button for Edit/Delete the specific Catalog
                             render: function (data, type, row, meta) {
-                                return `<button type='button'onclick="getEditData('${dataTable.row(meta.row).data().id}','${dataTable.row(meta.row).data().productName}','${dataTable.row(meta.row).data().description}','${dataTable.row(meta.row).data().warranty}','${dataTable.row(meta.row).data().note}','${dataTable.row(meta.row).data().productImage}','${dataTable.row(meta.row).data().productCatalogId}','${dataTable.row(meta.row).data().sellingPrice}','${dataTable.row(meta.row).data().insertDate}','${dataTable.row(meta.row).data().updateAt}',)" class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#Modal'>
+                                return `<a href="@Url.Action("ManageStock", "Product")/${dataTable.row(meta.row).data().id}" class="btn btn-primary">Stocks</a>
+
+
+                                        <button type='button'onclick="getEditData('${dataTable.row(meta.row).data().id}','${dataTable.row(meta.row).data().productName}','${dataTable.row(meta.row).data().description}','${dataTable.row(meta.row).data().warranty}','${dataTable.row(meta.row).data().note}','${dataTable.row(meta.row).data().productImage}','${dataTable.row(meta.row).data().productCatalogId}','${dataTable.row(meta.row).data().sellingPrice}','${dataTable.row(meta.row).data().insertDate}','${dataTable.row(meta.row).data().updateAt}',)" class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#Modal'>
                                                                                                     Edit
                                                                                                 </button>`
                             }

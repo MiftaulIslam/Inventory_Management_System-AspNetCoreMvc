@@ -10,7 +10,7 @@
     <button type='button' id="AddModalbtn" class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#Modal'>Add
         Product</button>
 </p>
-<table class="table" id="ProductCatalogTypeTable">
+<table class="table display responsive nowrap table-striped" style="width: 100%;" id="ProductCatalogTypeTable">
     <thead>
         <tr>
 
@@ -42,7 +42,7 @@
 <div class="modal fade" id="Delete" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header" id="DeleteModalHeader">
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -121,6 +121,11 @@
         //event for removing the field value
         document.getElementById("modalclose").addEventListener("click", () => {
             removeField(document.getElementById("AddType"))
+
+        })
+        //event for removing the field value
+        document.getElementById("warningDelete").addEventListener("click", () => {
+            document.getElementById("DeleteModalHeader").innerHTML = "Are you sure?"
 
         })
 

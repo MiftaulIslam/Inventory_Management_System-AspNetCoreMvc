@@ -17,79 +17,99 @@ build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = InventoryManagement
 build_property.RootNamespace = InventoryManagement
-build_property.ProjectDir = D:\GamesTBD\Inventory_Management_System-AspNetCoreMvc-main\Inventory_Management_System-AspNetCoreMvc-main\InventoryManagement\
+build_property.ProjectDir = E:\Work\Inventory_Management_System-AspNetCoreMvc-main\Inventory_Management_System-AspNetCoreMvc-main\InventoryManagement\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 8.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = true
-build_property.MSBuildProjectDirectory = D:\GamesTBD\Inventory_Management_System-AspNetCoreMvc-main\Inventory_Management_System-AspNetCoreMvc-main\InventoryManagement
+build_property.MSBuildProjectDirectory = E:\Work\Inventory_Management_System-AspNetCoreMvc-main\Inventory_Management_System-AspNetCoreMvc-main\InventoryManagement
 build_property._RazorSourceGeneratorDebug = 
 
-[D:/GamesTBD/Inventory_Management_System-AspNetCoreMvc-main/Inventory_Management_System-AspNetCoreMvc-main/InventoryManagement/Views/Dashboard/Index.cshtml]
+[E:/Work/Inventory_Management_System-AspNetCoreMvc-main/Inventory_Management_System-AspNetCoreMvc-main/InventoryManagement/Views/Dashboard/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGFzaGJvYXJkXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/GamesTBD/Inventory_Management_System-AspNetCoreMvc-main/Inventory_Management_System-AspNetCoreMvc-main/InventoryManagement/Views/Home/Index.cshtml]
+[E:/Work/Inventory_Management_System-AspNetCoreMvc-main/Inventory_Management_System-AspNetCoreMvc-main/InventoryManagement/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/GamesTBD/Inventory_Management_System-AspNetCoreMvc-main/Inventory_Management_System-AspNetCoreMvc-main/InventoryManagement/Views/Home/Privacy.cshtml]
+[E:/Work/Inventory_Management_System-AspNetCoreMvc-main/Inventory_Management_System-AspNetCoreMvc-main/InventoryManagement/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/GamesTBD/Inventory_Management_System-AspNetCoreMvc-main/Inventory_Management_System-AspNetCoreMvc-main/InventoryManagement/Views/Product/ManageProduct.cshtml]
+[E:/Work/Inventory_Management_System-AspNetCoreMvc-main/Inventory_Management_System-AspNetCoreMvc-main/InventoryManagement/Views/Product/ManageProduct.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdFxNYW5hZ2VQcm9kdWN0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/GamesTBD/Inventory_Management_System-AspNetCoreMvc-main/Inventory_Management_System-AspNetCoreMvc-main/InventoryManagement/Views/Product/ProductCatalog.cshtml]
+[E:/Work/Inventory_Management_System-AspNetCoreMvc-main/Inventory_Management_System-AspNetCoreMvc-main/InventoryManagement/Views/Product/ManageStock.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdFxNYW5hZ2VTdG9jay5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Work/Inventory_Management_System-AspNetCoreMvc-main/Inventory_Management_System-AspNetCoreMvc-main/InventoryManagement/Views/Product/ProductCatalog.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdFxQcm9kdWN0Q2F0YWxvZy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/GamesTBD/Inventory_Management_System-AspNetCoreMvc-main/Inventory_Management_System-AspNetCoreMvc-main/InventoryManagement/Views/Product/ProductCatalogType.cshtml]
+[E:/Work/Inventory_Management_System-AspNetCoreMvc-main/Inventory_Management_System-AspNetCoreMvc-main/InventoryManagement/Views/Product/ProductCatalogType.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdFxQcm9kdWN0Q2F0YWxvZ1R5cGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/GamesTBD/Inventory_Management_System-AspNetCoreMvc-main/Inventory_Management_System-AspNetCoreMvc-main/InventoryManagement/Views/Shared/Error.cshtml]
+[E:/Work/Inventory_Management_System-AspNetCoreMvc-main/Inventory_Management_System-AspNetCoreMvc-main/InventoryManagement/Views/Product/_ProductStockTableCrud.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdFxfUHJvZHVjdFN0b2NrVGFibGVDcnVkLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Work/Inventory_Management_System-AspNetCoreMvc-main/Inventory_Management_System-AspNetCoreMvc-main/InventoryManagement/Views/Purchase/ManagePurchase.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHVyY2hhc2VcTWFuYWdlUHVyY2hhc2UuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Work/Inventory_Management_System-AspNetCoreMvc-main/Inventory_Management_System-AspNetCoreMvc-main/InventoryManagement/Views/Purchase/ManagePurchaseList.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHVyY2hhc2VcTWFuYWdlUHVyY2hhc2VMaXN0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Work/Inventory_Management_System-AspNetCoreMvc-main/Inventory_Management_System-AspNetCoreMvc-main/InventoryManagement/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/GamesTBD/Inventory_Management_System-AspNetCoreMvc-main/Inventory_Management_System-AspNetCoreMvc-main/InventoryManagement/Views/Shared/Layouts/_Footer.cshtml]
+[E:/Work/Inventory_Management_System-AspNetCoreMvc-main/Inventory_Management_System-AspNetCoreMvc-main/InventoryManagement/Views/Shared/Layouts/_Footer.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXExheW91dHNcX0Zvb3Rlci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/GamesTBD/Inventory_Management_System-AspNetCoreMvc-main/Inventory_Management_System-AspNetCoreMvc-main/InventoryManagement/Views/Shared/Layouts/_Navbar.cshtml]
+[E:/Work/Inventory_Management_System-AspNetCoreMvc-main/Inventory_Management_System-AspNetCoreMvc-main/InventoryManagement/Views/Shared/Layouts/_Navbar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXExheW91dHNcX05hdmJhci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/GamesTBD/Inventory_Management_System-AspNetCoreMvc-main/Inventory_Management_System-AspNetCoreMvc-main/InventoryManagement/Views/Shared/Layouts/_Preloader.cshtml]
+[E:/Work/Inventory_Management_System-AspNetCoreMvc-main/Inventory_Management_System-AspNetCoreMvc-main/InventoryManagement/Views/Shared/Layouts/_Preloader.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXExheW91dHNcX1ByZWxvYWRlci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/GamesTBD/Inventory_Management_System-AspNetCoreMvc-main/Inventory_Management_System-AspNetCoreMvc-main/InventoryManagement/Views/Shared/Layouts/_Scripts.cshtml]
+[E:/Work/Inventory_Management_System-AspNetCoreMvc-main/Inventory_Management_System-AspNetCoreMvc-main/InventoryManagement/Views/Shared/Layouts/_Scripts.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXExheW91dHNcX1NjcmlwdHMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/GamesTBD/Inventory_Management_System-AspNetCoreMvc-main/Inventory_Management_System-AspNetCoreMvc-main/InventoryManagement/Views/Shared/Layouts/_Sidebar.cshtml]
+[E:/Work/Inventory_Management_System-AspNetCoreMvc-main/Inventory_Management_System-AspNetCoreMvc-main/InventoryManagement/Views/Shared/Layouts/_Sidebar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXExheW91dHNcX1NpZGViYXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/GamesTBD/Inventory_Management_System-AspNetCoreMvc-main/Inventory_Management_System-AspNetCoreMvc-main/InventoryManagement/Views/Shared/Layouts/_Styles.cshtml]
+[E:/Work/Inventory_Management_System-AspNetCoreMvc-main/Inventory_Management_System-AspNetCoreMvc-main/InventoryManagement/Views/Shared/Layouts/_Styles.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXExheW91dHNcX1N0eWxlcy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/GamesTBD/Inventory_Management_System-AspNetCoreMvc-main/Inventory_Management_System-AspNetCoreMvc-main/InventoryManagement/Views/Shared/_ValidationScriptsPartial.cshtml]
+[E:/Work/Inventory_Management_System-AspNetCoreMvc-main/Inventory_Management_System-AspNetCoreMvc-main/InventoryManagement/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/GamesTBD/Inventory_Management_System-AspNetCoreMvc-main/Inventory_Management_System-AspNetCoreMvc-main/InventoryManagement/Views/_ViewImports.cshtml]
+[E:/Work/Inventory_Management_System-AspNetCoreMvc-main/Inventory_Management_System-AspNetCoreMvc-main/InventoryManagement/Views/Vendor/ManageVendor.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVmVuZG9yXE1hbmFnZVZlbmRvci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Work/Inventory_Management_System-AspNetCoreMvc-main/Inventory_Management_System-AspNetCoreMvc-main/InventoryManagement/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/GamesTBD/Inventory_Management_System-AspNetCoreMvc-main/Inventory_Management_System-AspNetCoreMvc-main/InventoryManagement/Views/_ViewStart.cshtml]
+[E:/Work/Inventory_Management_System-AspNetCoreMvc-main/Inventory_Management_System-AspNetCoreMvc-main/InventoryManagement/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/GamesTBD/Inventory_Management_System-AspNetCoreMvc-main/Inventory_Management_System-AspNetCoreMvc-main/InventoryManagement/Views/Shared/_Layout.cshtml]
+[E:/Work/Inventory_Management_System-AspNetCoreMvc-main/Inventory_Management_System-AspNetCoreMvc-main/InventoryManagement/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-c4618qd80j

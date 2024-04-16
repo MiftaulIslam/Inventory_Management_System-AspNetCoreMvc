@@ -4,16 +4,9 @@ namespace InventoryManagement.Models;
 
 public partial class Purchase
 {
-    public Purchase()
-    {
-        PurchaseList = new HashSet<PurchaseList>();
-        PurchasePaymentList = new HashSet<PurchasePaymentList>();
-        ProductLog = new HashSet<ProductLog>();
-        PurchasePaymentReturnRecord = new HashSet<PurchasePaymentReturnRecord>();
-    }
+
 [Key]
     public int Id { get; set; }
-    public int RegistrationId { get; set; }
     public int VendorId { get; set; }
     public int PurchaseSn { get; set; }
     public decimal PurchaseTotalPrice { get; set; }
@@ -25,8 +18,7 @@ public partial class Purchase
     public string PurchasePaymentStatus { get; set; }
     public string MemoNumber { get; set; }
     public DateTime PurchaseDate { get; set; }
-    public DateTime InsertDate { get; set; }
-    public virtual Registration Registration { get; set; }
+    public DateTime UpdateAt { get; set; }
     public virtual Vendor Vendor { get; set; }
     public virtual Selling Selling { get; set; }
     public virtual ICollection<PurchaseList> PurchaseList { get; set; }

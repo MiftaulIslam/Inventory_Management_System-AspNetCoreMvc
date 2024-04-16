@@ -1,0 +1,192 @@
+﻿@model InventoryManagement.Models.ProductStock
+
+@{
+    ViewData["Title"] = "ProductStock";
+}
+
+<h1>ProductStock</h1>
+<p>@ViewBag.Id</p>
+
+<table class="table responsive table-striped" id="ProductStockTable">
+    <thead>
+        <tr>
+            <td>Id</td>
+            <td>ProductCode</td>
+            <td>Product</td>
+            <td>SellingListId</td>
+            <td>PurchaseListId</td>
+            <td>IsSold</td>
+            <td>IsDamage</td>
+            <td>InsertDate</td>
+            <td>Manage</td>
+        </tr>
+    </thead>
+</table>
+
+
+<!--Edit/Add Modal -->
+<div class="modal fade" id="Modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="modalheader">Update Stock</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" id="HiddenId" asp-for="Id">
+
+                    <div class="form-group">
+                        <label asp-for="ProductCode" class="control-label"></label>
+                        <input asp-for="ProductCode" required class="form-control" />
+                        <span asp-validation-for="ProductCode" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="InsertDate" class="control-label"></label>
+                        <input asp-for="InsertDate" required class="form-control" />
+                        <span asp-validation-for="InsertDate" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="IsSold">
+                        <label class="form-check-label" asp-for="IsSold"></label>
+                    </div>
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" asp-for="IsDamage">
+                        <label class="form-check-label" asp-for="IsDamage"></label>
+                    </div>
+                    <div class="form-group" id="ProductSection">
+                        <label asp-for="ProductId" class="control-label"></label>
+                        <select class="form-select" required asp-for="ProductId" asp-items="ViewBag.Product"
+                            aria-label="Default select example">
+                            <option value="default" selected>Select Product Type...</option>
+                        </select>
+                        <span asp-validation-for="ProductId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group" id="SellingSection">
+                        <label asp-for="SellingListId" class="control-label"></label>
+                        <select class="form-select" required asp-for="SellingListId" asp-items="ViewBag.Purchase"
+                            aria-label="Default select example">
+                            <option value="default" selected>Select Selling Type...</option>
+                        </select>
+                        <span asp-validation-for="SellingListId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group" id="PurchaseSection">
+                        <label asp-for="PurchaseListId" class="control-label"></label>
+                        <select class="form-select" required asp-for="PurchaseListId" asp-items="ViewBag.Purchase"
+                            aria-label="Default select example">
+                            <option value="default" selected>Select Purchase Type...</option>
+                        </select>
+                        <span asp-validation-for="PurchaseListId" class="text-danger"></span>
+                    </div>
+                </form>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Close
+                    </button>
+                    <button type="button" id="Updatebtn" class="btn btn-primary">Update</button>
+                </div>
+
+<a href=""></a>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const Id = '@ViewBag.Id'; // Enclose in quotes to treat it as a string
+
+            const hiddenId = document.getElementById("HiddenId");
+            const ProductCode = document.getElementById("ProductCode");
+            const ProductId = document.getElementById("ProductId");
+            const SellingListId = document.getElementById("SellingListId");
+            const PurchaseListId = document.getElementById("PurchaseListId");
+            const InsertDate = document.getElementById("InsertDate");
+
+            const IsSold = document.getElementById("IsSold");
+            const IsDamage = document.getElementById("IsDamage");
+
+            const Updatebtn = document.getElementById("Updatebtn");
+
+            //Creating FromData for passing the input field values to controller
+            function getInputValues() {
+                let form = new FormData();
+                form.append("Id", hiddenId.value);
+                form.append("isSold", IsSold.checked);
+                form.append("isDamage", IsDamage.checked);
+                printFormData(form);
+                return form;
+            }
+
+            //for showing the specific item values during update
+            async function StockGetEditData(...fields) {
+                //Dynamically changing the modal title
+                document.getElementById("modalheader").innerText = "Update Modal";
+
+                disableMultipleFields(PurchaseListId, ProductId, ProductCode, InsertDate);
+
+                let fieldBody = {};
+                for (let i = 0; i < fields.length; i++) {
+                    fieldBody[i] = fields[i];
+                }
+                console.log(fieldBody);
+
+                getById("http://localhost:5000/Purchase/GetPurchaseListById", fieldBody[4], (object) => {
+                    console.log(object.purchaseId);
+                    PurchaseListId.value = object.purchaseId;
+                    ProductId.value = object.productId;
+                });
+
+                if (fieldBody[5] == "true") {
+                    IsSold.checked = true;
+                }
+                if (fieldBody[6] == "true") {
+                    IsDamage.checked = true;
+                }
+                hiddenId.value = parseInt(fieldBody[0]);
+                ProductCode.value = fieldBody[1];
+                InsertDate.value = fieldBody[7];
+            }
+
+            Updatebtn.addEventListener("click", () => {
+                edit("UpdateProductStock", getInputValues());
+            });
+
+            let table = document.getElementById("ProductStockTable");
+
+            var StockdataTable = new DataTable(table, {
+                ajax: {
+                    url: `/product/GetStocksById?id=${parseInt(Id)}`,
+                    type: "POST",
+                    dataType: "json"
+                },
+                columns: [
+                    { data: "id", name: "Id", autoWidth: true },
+                    { data: "productCode", name: "ProductCode", autoWidth: true },
+                    { data: "productId", name: "Product", autoWidth: true },
+                    { data: "sellingListId", name: "SellingListId", autoWidth: true },
+                    { data: "purchaseListId", name: "PurchaseListId", autoWidth: true },
+                    { data: "isSold", name: "IsSold", autoWidth: true },
+                    { data: "isDamage", name: "IsDamage", autoWidth: true },
+                    { data: "insertDate", name: "InsertDate", autoWidth: true },
+                    {
+                        data: "id", name: "Manage", autoWidth: true,
+                        //Adding an Extra button for Edit/Delete the specific Catalog
+                        render: function (data, type, row, meta) {
+                            return `<button type='button'onclick="StockGetEditData('${StockdataTable.row(meta.row).data().id}','${StockdataTable.row(meta.row).data().productCode}','${StockdataTable.row(meta.row).data().productId}','${StockdataTable.row(meta.row).data().sellingListId}','${StockdataTable.row(meta.row).data().purchaseListId}','${StockdataTable.row(meta.row).data().isSold}','${StockdataTable.row(meta.row).data().isDamage}','${StockdataTable.row(meta.row).data().insertDate}')" class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#StockModal'>
+                                                                                                    Edit
+                                                                                                </button>`;
+                        }
+                    },
+                ]
+            });
+        });
+    </script>
+}

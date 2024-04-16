@@ -1,14 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace InventoryManagement.Models;
 
 public partial class Vendor
 {
-    public Vendor()
-    {
-        Purchase = new HashSet<Purchase>();
-        PurchasePayment = new HashSet<PurchasePayment>();
-    }
 [Key]
     public int Id { get; set; }
     public string VendorCompanyName { get; set; }
@@ -21,7 +17,9 @@ public partial class Vendor
     public decimal ReturnAmount { get; set; }
     public decimal Paid { get; set; }
     public decimal Due { get; set; }
-    public byte[] Photo { get; set; }
+    [NotMapped]
+    public IFormFile Photo {get;set;}
+    public byte[] VendorPhoto { get; set; }
     public DateTime InsertDate { get; set; }
     public virtual ICollection<Purchase> Purchase { get; set; }
     public virtual ICollection<PurchasePayment> PurchasePayment { get; set; }
